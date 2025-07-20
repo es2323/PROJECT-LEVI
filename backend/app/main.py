@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from .api.upload_cv import router as upload_cv_router
-from .api.extract_skills import router as extract_skills_router
+from .api.cv_skill_extraction import router as cv_skill_extraction_router
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,12 +13,11 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"], # Allows all methods (GET, POST, etc.)
-    allow_headers=["*"], # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-app.include_router(upload_cv_router, prefix="/api")
-app.include_router(extract_skills_router, prefix="/api")
+app.include_router(cv_skill_extraction_router, prefix="/api")
 
 @app.get("/")
 async def read_root():
