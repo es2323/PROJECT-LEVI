@@ -71,7 +71,7 @@ async function handleSubmit() {
 
   try {
     // 4. Make the POST request with axios
-    const response = await axios.post("http://127.0.0.1:8000/api/upload-cv", formData, {
+    const response = await axios.post("http://127.0.0.1:8000/api/cv-skill-extraction", formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -79,7 +79,7 @@ async function handleSubmit() {
 
     // 5. Handle the successful response
     console.log("API Response:", response.data);
-    extractedText.value = response.data.extracted_text;
+    extractedText.value = response.data.extracted_skills;
 
   } catch (error) {
     // 6. Handle any errors from the API call
