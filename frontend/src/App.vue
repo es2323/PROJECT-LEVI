@@ -1,18 +1,20 @@
 <script setup>
-// Importing a child component demonstrates Component-Based Architecture
-import CVUploader from './components/CVUploader.vue';
+// Import your new component
+import Questionnaire from './components/Questionnaire.vue';
 </script>
 
 <template>
   <main>
-    <CVUploader />
+    <Questionnaire />
   </main>
 </template>
 
-<style>
-/* Global styles can go here if needed */
+<style scoped>
 main {
-  font-family: sans-serif;
-  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #f7fafc;
 }
 </style>
