@@ -5,38 +5,20 @@
     
     <form @submit.prevent="handleSubmit" class="form-wrapper">
       <div class="form-group">
-        <label>Which tech sectors are you most passionate about pursuing?</label>
+        <label>What tech sector(s) are you most passionate about pursuing?</label>
         <MultiSelectDropdown 
-          :options="fieldOptions"
-          v-model="formData.techField"
-          placeholder="Select a field..."
+          :options="sectorOptions"
+          v-model="formData.sectors"
+          placeholder="Select sectors..."
         />
       </div>
 
       <div class="form-group">
-        <label>What type of roles do you see yourself doing?</label>
+        <label>What type of role(s) do you see yourself doing?</label>
         <MultiSelectDropdown 
-          :options="roleOptions"
-          v-model="formData.roleType"
-          placeholder="Select a role..."
-        />
-      </div>
-
-      <div class="form-group">
-        <label>Which of these skills are you most interested in developing?</label>
-        <MultiSelectDropdown 
-          :options="skillOptions"
-          v-model="formData.skillsOfInterest"
-          placeholder="Select skills..."
-        />
-      </div>
-
-      <div class="form-group">
-        <label>What industries excite you the most?</label>
-        <MultiSelectDropdown 
-          :options="industryOptions"
-          v-model="formData.industries"
-          placeholder="Select industries..."
+          :options="dynamicRoleOptions"
+          v-model="formData.roles"
+          placeholder="Select roles..."
         />
       </div>
       
@@ -46,11 +28,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import MultiSelectDropdown from './MultiSelectDropdown.vue';
 
 // Define the options for each dropdown
-const fieldOptions = ref([
+const sectorOptions = ref([
   { value: 'fintech', label: 'FinTech (Financial Technology) 💰' },
   { value: 'healthtech', label: 'HealthTech (Healthcare Technology) 🩺' },
   { value: 'ai_ml', label: 'AI / Machine Learning 🤖' },
@@ -62,40 +44,119 @@ const fieldOptions = ref([
   { value: 'gov', label: 'GovTech & Public Sector 🏛️' }
 ]);
 
-const roleOptions = ref([
-  { value: 'startup', label: 'Fast-paced Startup' },
-  { value: 'corporate', label: 'Large Corporation' },
-  { value: 'mid-size', label: 'Mid-sized Tech Company' },
-  { value: 'public-sector', label: 'Public Sector / Government' }
-]);
-
-const skillOptions = ref([
-  { value: 'js_frameworks', label: 'JavaScript Frameworks (React, Vue)' },
-  { value: 'python_data', label: 'Python for Data Science' },
-  { value: 'cloud_aws', label: 'Cloud Platforms (AWS)' },
-  { value: 'databases', label: 'Databases (SQL, NoSQL)' }
-]);
-
-const industryOptions = ref([
-  { value: 'fintech', label: 'Finance (FinTech)' },
-  { value: 'healthtech', label: 'Healthcare (HealthTech)' },
-  { value: 'gaming', label: 'Gaming & Entertainment' },
-  { value: 'ecommerce', label: 'E-commerce' }
-]);
+// 1. THE DATA MAP: Maps sectors to their specific roles
+const rolesBySector = {
+  fintech: [
+    { value: 'quant_dev', label: 'Quantitative Developer' },
+    { value: 'backend_payments', label: 'Backend Engineer (Payments)' },
+    { value: 'cybersec_finance', label: 'Cybersecurity Analyst (Finance)' },
+    { value: 'data_fraud', label: 'Data Scientist (Fraud Detection)' },
+    { value: 'fullstack_trading', label: 'Full-Stack Developer (Trading Platforms)' }
+  ],
+  healthtech: [
+    { value: 'ml_imaging', label: 'ML Engineer (Medical Imaging)' },
+    { value: 'fullstack_emr', label: 'Full-Stack Developer (EHR Systems)' },
+    { value: 'data_privacy_eng', label: 'Data Privacy Engineer' },
+    { value: 'backend_patient_api', label: 'Backend Engineer (Patient Data APIs)' },
+    { value: 'mobile_health', label: 'Mobile Health App Developer' }
+  ],
+  ai_ml: [
+    { value: 'ml_engineer', label: 'Machine Learning Engineer' },
+    { value: 'research_scientist', label: 'Research Scientist' },
+    { value: 'nlp_engineer', label: 'NLP Engineer' },
+    { value: 'computer_vision_eng', label: 'Computer Vision Engineer' },
+    { value: 'ai_product_manager', label: 'AI Product Manager' }
+  ],
+  ecommerce: [
+    { value: 'frontend_storefront', label: 'Frontend Developer (Storefronts)' },
+    { value: 'backend_orders', label: 'Backend Engineer (Order Management)' },
+    { value: 'data_analyst_sales', label: 'Data Analyst (Sales Trends)' },
+    { value: 'sre_ecommerce', label: 'Site Reliability Engineer (High Traffic)' },
+    { value: 'search_recommendation', label: 'Search & Recommendations Engineer' }
+  ],
+  game: [
+    { value: 'gameplay_eng', label: 'Gameplay Engineer' },
+    { value: 'graphics_eng', label: 'Graphics Programmer' },
+    { value: 'game_engine_tools', label: 'Game Engine Tools Developer' },
+    { value: 'backend_online', label: 'Backend Engineer (Online Services)' },
+    { value: 'qa_automation_game', label: 'QA Automation Engineer (Gaming)' }
+  ],
+  edtech: [
+    { value: 'fullstack_lms', label: 'Full-Stack Developer (LMS)' },
+    { value: 'mobile_learning', label: 'Mobile Learning Developer' },
+    { value: 'instructional_designer_tech', label: 'Instructional Designer (Technical)' },
+    { value: 'backend_student_data', label: 'Backend Engineer (Student Data)' },
+    { value: 'frontend_interactive', label: 'Frontend Developer (Interactive Content)' }
+  ],
+  greentech: [
+    { value: 'data_scientist_climate', label: 'Data Scientist (Climate Modeling)' },
+    { value: 'iot_smart_grid', label: 'IoT Engineer (Smart Grids)' },
+    { value: 'backend_energy', label: 'Backend Engineer (Energy Trading)' },
+    { value: 'fullstack_carbon', label: 'Full-Stack Developer (Carbon Tracking)' },
+    { value: 'gis_developer_green', label: 'GIS Developer (Renewable Energy)' }
+  ],
+  cars: [
+    { value: 'embedded_systems_auto', label: 'Embedded Systems Engineer' },
+    { value: 'computer_vision_adas', label: 'Computer Vision Engineer (ADAS)' },
+    { value: 'backend_fleet', label: 'Backend Engineer (Fleet Management)' },
+    { value: 'mobile_ridesharing', label: 'Mobile App Developer (Ride-Sharing)' },
+    { value: 'robotics_auto', label: 'Robotics Software Engineer' }
+  ],
+  gov: [
+    { value: 'fullstack_citizen', label: 'Full-Stack Developer (Citizen Services)' },
+    { value: 'cybersec_gov', label: 'Cybersecurity Analyst (Public Sector)' },
+    { value: 'data_analyst_policy', label: 'Data Analyst (Public Policy)' },
+    { value: 'cloud_gov', label: 'Cloud Engineer (GovCloud)' },
+    { value: 'gis_developer_gov', label: 'GIS Developer (Public Infrastructure)' }
+  ]
+};
 
 // Use a single reactive object to hold all form data
 const formData = ref({
-  techField: [],
-  roleType: [],
-  skillsOfInterest: [],
-  industries: []
+  sectors: [],
+  roles: [],
+});
+
+// --- DYNAMIC LOGIC ---
+
+// 2. THE COMPUTED PROPERTY: Automatically generates the role options
+const dynamicRoleOptions = computed(() => {
+  console.log("Sectors changed:", formData.value.sectors); 
+  if (formData.value.sectors.length === 0) {
+    return [];
+  }
+  // Use flatMap to get a single list of roles from all selected sectors
+  return formData.value.sectors
+    .filter(sector => rolesBySector[sector]) // Filter out 'other' selections
+    .flatMap(sector => rolesBySector[sector]);
+});
+
+// 4. THE WATCHER: Cleans up selected roles if a sector is deselected
+watch(() => formData.value.sectors, (newSectors, oldSectors) => {
+  // If sectors were removed, we need to check if any selected roles are now invalid
+  if (newSectors.length < oldSectors.length) {
+    const validRoleValues = dynamicRoleOptions.value.map(option => option.value);
+    // Filter the roles to keep only those that are still valid
+    formData.value.roles = formData.value.roles.filter(role => {
+      // Keep 'other' selections, but remove specific roles that are no longer valid
+      return role.startsWith('other') || validRoleValues.includes(role);
+    });
+  }
 });
 
 function handleSubmit() {
   console.log("Final form data:", formData.value);
-  // Next step: send this data to the backend
 }
 </script>
+
+
+
+
+
+
+
+
+
 
 <style scoped>
 body { /* This won't apply globally, just for context */
