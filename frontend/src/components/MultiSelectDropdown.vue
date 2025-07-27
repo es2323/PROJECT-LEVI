@@ -112,7 +112,7 @@ watch(() => props.modelValue, (newValue) => {
   border-radius: 4px;
   margin-top: 4px;
   z-index: 10;
-  max-height: 200px;
+  max-height: 400px;
   overflow-y: auto;
 }
 ul {
@@ -134,7 +134,7 @@ input[type="checkbox"] {
   margin-right: 10px;
 }
 .other-input {
-  width: calc(100% - 20px);
+  width: calc(100% - 50px);
   margin: 0 10px 10px 10px;
   padding: 8px;
   border: 1px solid #374954;

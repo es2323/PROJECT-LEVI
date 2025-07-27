@@ -1,7 +1,7 @@
 <template>
   <div class="questionnaire-container">
     <h2>Tell us more about your goals!</h2>
-    <p class="subtitle">This will help us build the perfect roadmap for you.</p>
+    <p class="subtitle">This will help Levi build the perfect roadmap for you.</p>
     
     <form @submit.prevent="handleSubmit" class="form-wrapper">
       <div class="form-group">
@@ -13,14 +13,47 @@
         />
       </div>
 
-      <div class="form-group">
-        <label>What type of role(s) do you see yourself doing?</label>
-        <MultiSelectDropdown 
-          :options="dynamicRoleOptions"
-          v-model="formData.roles"
-          placeholder="Select roles..."
-        />
+      <div v-if="formData.sectors.length > 0" class="form-group">
+        <label>What type of role(s) do you see yourself doing? Don't worry if you aren't sure yet.</label>
+        <div v-for="role in dynamicRoleOptions" :key="role.value" class="checkbox-group">
+          <label>
+            <input type="checkbox" :value="role.value" v-model="formData.roles.predefined">
+            {{ role.label }}
+          </label>
+        </div>
+
+        <div class="other-group">
+          <label>Enter a custom role!</label>
+          <input type="text" placeholder="e.g., Technical Writer" v-model="formData.roles.genericOther">
+        </div>
+        
+        <div v-for="customSector in customSectors" :key="customSector" class="other-group">
+          <label>What do you have in mind for '{{ customSector }}'?</label>
+          <input type="text" placeholder="Specify role..." v-model="formData.roles.customSectorRoles[customSector]">
+        </div>
       </div>
+
+      <fieldset class="form-group">
+        <legend>What is the best way you learn? (Select all that apply)</legend>
+        <div class="options-group">
+          <label>
+            <input type="checkbox" value="visual" v-model="formData.learningStyle">
+            Visual (seeing diagrams, videos)
+          </label>
+          <label>
+            <input type="checkbox" value="auditory" v-model="formData.learningStyle">
+            Auditory (listening to lectures, discussions)
+          </label>
+          <label>
+            <input type="checkbox" value="reading" v-model="formData.learningStyle">
+            Reading/Writing (notes, articles, books)
+          </label>
+          <label>
+            <input type="checkbox" value="kinaesthetic" v-model="formData.learningStyle">
+            Kinaesthetic (doing, practical projects)
+          </label>
+        </div>
+      </fieldset>
       
       <button type="submit">Generate My Roadmap</button>
     </form>
@@ -114,34 +147,46 @@ const rolesBySector = {
 // Use a single reactive object to hold all form data
 const formData = ref({
   sectors: [],
-  roles: [],
+  roles: {
+    predefined: [],      // For checkboxes, e.g., ['quant_dev']
+    genericOther: '',    // For the main 'Other' text box
+    customSectorRoles: {} // For the dynamic 'Other' text boxes, e.g., {'Architecture Technology': 'System Architect'}
+  },
+  learningStyle: [],
 });
 
 // --- DYNAMIC LOGIC ---
 
-// 2. THE COMPUTED PROPERTY: Automatically generates the role options
+// Computed property for predefined roles (no change here)
 const dynamicRoleOptions = computed(() => {
   console.log("Sectors changed:", formData.value.sectors); 
-  if (formData.value.sectors.length === 0) {
-    return [];
-  }
+  if (formData.value.sectors.length === 0) return [];
+  
   // Use flatMap to get a single list of roles from all selected sectors
   return formData.value.sectors
-    .filter(sector => rolesBySector[sector]) // Filter out 'other' selections
+    .filter(sector => rolesBySector[sector])
     .flatMap(sector => rolesBySector[sector]);
 });
 
-// 4. THE WATCHER: Cleans up selected roles if a sector is deselected
-watch(() => formData.value.sectors, (newSectors, oldSectors) => {
-  // If sectors were removed, we need to check if any selected roles are now invalid
-  if (newSectors.length < oldSectors.length) {
+// 2. NEW COMPUTED PROPERTY for custom sectors
+const customSectors = computed(() => {
+  // Find selections that start with 'other:', then extract the text after the colon
+  return formData.value.sectors
+    .filter(s => s.startsWith('other:'))
+    .map(s => s.split(':')[1]);
+});
+
+// Watcher to clean up role data when sectors change (slightly updated)
+watch(() => formData.value.sectors, () => {
     const validRoleValues = dynamicRoleOptions.value.map(option => option.value);
-    // Filter the roles to keep only those that are still valid
-    formData.value.roles = formData.value.roles.filter(role => {
-      // Keep 'other' selections, but remove specific roles that are no longer valid
-      return role.startsWith('other') || validRoleValues.includes(role);
-    });
-  }
+    formData.value.roles.predefined = formData.value.roles.predefined.filter(role => validRoleValues.includes(role));
+    
+    // Clean up custom roles if the custom sector was removed
+    for (const sectorName in formData.value.roles.customSectorRoles) {
+        if (!customSectors.value.includes(sectorName)) {
+            delete formData.value.roles.customSectorRoles[sectorName];
+        }
+    }
 });
 
 function handleSubmit() {
@@ -164,7 +209,7 @@ body { /* This won't apply globally, just for context */
 }
 
 .questionnaire-container {
-  width: 500px;
+  width: 400px;
   margin: 0 auto;
   padding: 50px;
   background-color: #374954;
@@ -203,5 +248,22 @@ button {
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
+}
+
+.checkbox-group {
+  padding-left: 10px;
+}
+.other-group {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #4F6877;
+}
+.other-group input {
+  width: 100%;
+  padding: 8px;
+  background-color: #fff;
+  border: none;
+  border-radius: 4px;
+  margin-top: 0.5rem;
 }
 </style>
