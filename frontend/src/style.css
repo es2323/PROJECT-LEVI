@@ -1,3 +1,34 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* frontend/src/style.css */
+
+/* --- Step 1: Import the Lexend Font --- */
+/* This line imports the Lexend font from Google Fonts. */
+/* We're getting Regular (400) for body text and Bold (700) for headings. */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap');
+
+/* --- Step 2: Define Your Color Palette as CSS Variables --- */
+/* Defining colors here allows you to reuse them easily everywhere. */
+:root {
+  --background-color: #1E352F; /* Dark Forest Green */
+  --text-color: #E0E0E0;       /* Light Grey */
+  --accent-color: #E3B448;      /* Mustard Yellow */
+}
+
+/* --- Step 3: Apply Styles Globally --- */
+/* These styles apply to the entire application. */
+body {
+  /* Apply the background and text colors */
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  /* Set Lexend as the default font for everything */
+  font-family: 'Lexend', sans-serif;
+  
+  /* A nice reset for margins */
+  margin: 0;
+}
+
+/* --- Step 4: Set a Default Style for Headings --- */
+/* This makes all headings bold by default, creating a clear hierarchy. */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}

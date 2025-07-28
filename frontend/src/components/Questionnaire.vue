@@ -204,17 +204,13 @@ function handleSubmit() {
 
 
 <style scoped>
-body { /* This won't apply globally, just for context */
-  background-color: #374954;
-}
-
 .questionnaire-container {
   width: 400px;
-  margin: 0 auto;
-  padding: 50px;
-  background-color: #374954;
-  color: #fff;
-  font-family: "Andale Mono", AndaleMono, monospace;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  border: 1px solid var(--accent-color); /* ADDED: Accent border */
+  border-radius: 8px;
+  background-color: var(--background-color); 
 }
 
 .subtitle {
@@ -235,34 +231,40 @@ body { /* This won't apply globally, just for context */
 label {
   display: block;
   margin-bottom: 0.75rem;
+  font-weight: 700; 
 }
 
 button {
-  background-color: #6BBE92;
+  background-color: var(--accent-color);
+  color: var(--background-color); /* CHANGED: Use dark background for text */
   width: 100%;
   border: 0;
   padding: 12px 0;
   margin-top: 1rem;
   text-align: center;
-  color: #fff;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
+  border-radius: 4px; 
 }
 
 .checkbox-group {
   padding-left: 10px;
 }
+input[type="checkbox"] {
+  accent-color: var(--accent-color);
+  margin-right: 0.5rem;
+}
 .other-group {
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #4F6877;
-}
+  border-top: 1px solid rgba(224, 224, 224, 0.2);}
 .other-group input {
   width: 100%;
   padding: 8px;
-  background-color: #fff;
-  border: none;
+  background-color: var(--background-color); 
+  color: var(--text-color); 
+  border: 1px solid var(--accent-color); 
   border-radius: 4px;
   margin-top: 0.5rem;
 }

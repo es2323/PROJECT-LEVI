@@ -37,14 +37,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'; // Import `ref` from Vue
-import axios from 'axios';  // Import axios
+import { ref } from 'vue'; 
+import axios from 'axios';  
+import { useRouter } from 'vue-router';
 
 // Create reactive variables to hold the selected file and the extracted text
 const selectedFile = ref(null);
 const extractedText = ref('');
 const errorMessage = ref('');
 const isLoading = ref(false);
+const router = useRouter();
 
 // This function now saves the selected file to our state
 function handleFileChange(event) {
@@ -88,55 +90,57 @@ async function handleSubmit() {
   } finally {
     // 7. Reset the loading state
     isLoading.value = false;
+    router.push('/questionnaire');
   }
 }
 </script>
 
 <style scoped>
-/* This is a "Smart Styling Strategy" */
-/* These styles ONLY apply to this component and won't leak out */
+
 .cv-uploader {
   max-width: 500px;
   margin: 2rem auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
+  padding: 2.5rem;
+  border: 1px solid var(--accent-color); 
   border-radius: 8px;
   text-align: center;
 }
 .cv-uploader-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 1.5rem;
 }
 
 .error-message {
   margin-top: 1rem;
-  color: #e53e3e; /* Red color for errors */
+  color:  #ff7f7f;/* Red color for errors */
   font-weight: bold;
 }
 
 .results-container {
   margin-top: 2rem;
   text-align: left;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid rgba(224, 224, 224, 0.2);
   padding-top: 1rem;
 }
 
 .results-text {
-  background-color: #f7fafc;
+  background-color: rgba(0, 0, 0, 0.2); 
   padding: 1rem;
   border-radius: 4px;
   white-space: pre-wrap; /* This makes the text wrap nicely */
   word-wrap: break-word;
   max-height: 300px;
   overflow-y: auto;
+  color: var(--text-color); 
 }
 
 .file-upload-label {
   padding: 0.75rem 1rem;
-  background-color: #63b3ed; /* A different blue */
-  color: white;
+  background-color: var(--accent-color); 
+  color: var(--background-color);
+  font-weight: 700; 
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
@@ -145,22 +149,34 @@ async function handleSubmit() {
 }
 
 .file-upload-label:hover {
-  background-color: #4299e1;
+  background-color:  #cda240;
 }
 
 .file-input-hidden {
-  display: none; /* This visually hides the default file input */
+  display: none; 
 }
 
 .file-name {
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  color: #718096; /* A grey color */
+  color: var(--text-color); 
+  opacity: 0.7
 }
 
-/* Style for the disabled button */
+.submit-button { /* Added base styles for the submit button */
+  padding: 0.75rem 1rem;
+  background-color: var(--accent-color);
+  color: var(--background-color);
+  font-weight: 700;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
 .submit-button:disabled {
-  background-color: #a0aec0; /* Grey out the button when disabled */
+  background-color: #8c7127;/* Grey out the button when disabled */
   cursor: not-allowed;
+  opacity: 0.6;
+
 }
 </style>

@@ -5,7 +5,7 @@ import Questionnaire from './components/Questionnaire.vue';
 
 <template>
   <main>
-    <Questionnaire />
+    <router-view />
   </main>
 </template>
 
@@ -15,6 +15,6 @@ main {
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  background-color: #f7fafc;
+  padding-top: 2rem;
 }
 </style>

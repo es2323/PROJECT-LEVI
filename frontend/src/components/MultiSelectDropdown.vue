@@ -89,12 +89,11 @@ watch(() => props.modelValue, (newValue) => {
 .dropdown-container {
   position: relative;
   width: 100%;
-  font-family: "Andale Mono", AndaleMono, monospace;
 }
 .dropdown-button {
   width: 100%;
-  background-color: #4F6877;
-  color: #fff;
+  background-color: var(--accent-color); /* CHANGED: Use accent color */
+  color: var(--background-color); /* CHANGED: Use dark background for text */
   padding: 8px 15px;
   border: none;
   border-radius: 4px;
@@ -103,17 +102,19 @@ watch(() => props.modelValue, (newValue) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-weight: 700; /* ADDED: Make text bold */
   font-size: 14px;
 }
 .dropdown-menu {
   position: absolute;
   width: 100%;
-  background-color: #4F6877;
+  background-color: #2a4a40;
   border-radius: 4px;
   margin-top: 4px;
   z-index: 10;
   max-height: 400px;
   overflow-y: auto;
+  border: 1px solid var(--accent-color);
 }
 ul {
   list-style: none;
@@ -125,21 +126,22 @@ li label {
   align-items: center;
   padding: 8px;
   cursor: pointer;
-  color: #fff;
+  color: var(--text-color);
 }
 li:hover {
-  background-color: #374954;
+  background-color: var(--background-color);
 }
 input[type="checkbox"] {
   margin-right: 10px;
+  accent-color: var(--accent-color);
 }
 .other-input {
   width: calc(100% - 50px);
   margin: 0 10px 10px 10px;
   padding: 8px;
-  border: 1px solid #374954;
-  background-color: #fff;
-  color: #333;
+  border: 1px solid var(--accent-color); 
+  background-color: var(--background-color); 
+  color: var(--text-color); 
   border-radius: 4px;
 }
 .arrow {
