@@ -39,14 +39,13 @@
 <script setup>
 import { ref } from 'vue'; 
 import axios from 'axios';  
-import { useRouter } from 'vue-router';
 
 // Create reactive variables to hold the selected file and the extracted text
+const emit = defineEmits(['cv-uploaded']);
 const selectedFile = ref(null);
 const extractedText = ref('');
 const errorMessage = ref('');
 const isLoading = ref(false);
-const router = useRouter();
 
 // This function now saves the selected file to our state
 function handleFileChange(event) {
@@ -90,8 +89,7 @@ async function handleSubmit() {
   } finally {
     // 7. Reset the loading state
     isLoading.value = false;
-    router.push('/questionnaire');
-  }
+    emit('cv-uploaded');  }
 }
 </script>
 

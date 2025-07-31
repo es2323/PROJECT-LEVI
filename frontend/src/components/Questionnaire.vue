@@ -1,6 +1,11 @@
 <template>
   <div class="questionnaire-container">
-    <h2>Tell us more about your goals!</h2>
+        <h2 class="main-title">
+      <Typewriter 
+        text="Tell us more about your goals!" 
+        :speed="50"
+      />
+    </h2>
     <p class="subtitle">This will help Levi build the perfect roadmap for you.</p>
     
     <form @submit.prevent="handleSubmit" class="form-wrapper">
@@ -26,7 +31,6 @@
           <label>Enter a custom role!</label>
           <input type="text" placeholder="e.g., Technical Writer" v-model="formData.roles.genericOther">
         </div>
-        
         <div v-for="customSector in customSectors" :key="customSector" class="other-group">
           <label>What do you have in mind for '{{ customSector }}'?</label>
           <input type="text" placeholder="Specify role..." v-model="formData.roles.customSectorRoles[customSector]">
@@ -34,24 +38,58 @@
       </div>
 
       <fieldset class="form-group">
-        <legend>What is the best way you learn? (Select all that apply)</legend>
+        <legend>Looking ahead 5 years, what career level do you aspire to reach?</legend>
         <div class="options-group">
-          <label>
-            <input type="checkbox" value="visual" v-model="formData.learningStyle">
-            Visual (seeing diagrams, videos)
-          </label>
-          <label>
-            <input type="checkbox" value="auditory" v-model="formData.learningStyle">
-            Auditory (listening to lectures, discussions)
-          </label>
-          <label>
-            <input type="checkbox" value="reading" v-model="formData.learningStyle">
-            Reading/Writing (notes, articles, books)
-          </label>
-          <label>
-            <input type="checkbox" value="kinaesthetic" v-model="formData.learningStyle">
-            Kinaesthetic (doing, practical projects)
-          </label>
+          <label><input type="radio" value="expert" v-model="formData.ambition"> Senior Technical Expert</label>
+          <label><input type="radio" value="leadership" v-model="formData.ambition"> Team Leadership</label>
+          <label><input type="radio" value="product" v-model="formData.ambition"> Product-focused Role</label>
+          <label><input type="radio" value="unsure" v-model="formData.ambition"> Not sure yet</label>
+        </div>
+      </fieldset>
+      
+      <fieldset class="form-group">
+        <legend>Which type of technical challenge are you most excited to solve?</legend>
+        <div class="options-group">
+          <label><input type="checkbox" value="ui" v-model="formData.passion"> Building user interfaces</label>
+          <label><input type="checkbox" value="backend" v-model="formData.passion"> Designing backend systems</label>
+          <label><input type="checkbox" value="data" v-model="formData.passion"> Finding insights in data</label>
+          <label><input type="checkbox" value="automation" v-model="formData.passion"> Automating infrastructure</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <legend>Thinking about your top technical skill, how would you rate your ability?</legend>
+        <div class="options-group">
+          <label><input type="radio" value="foundational" v-model="formData.confidence"> Foundational (Used in tutorials)</label>
+          <label><input type="radio" value="intermediate" v-model="formData.confidence"> Intermediate (Built a personal project)</label>
+          <label><input type="radio" value="advanced" v-model="formData.confidence"> Advanced (Ready for production code)</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <legend>What is the best way you learn?</legend>
+        <div class="options-group">
+          <label><input type="checkbox" value="visual" v-model="formData.learningStyle"> Visual (videos)</label>
+          <label><input type="checkbox" value="auditory" v-model="formData.learningStyle"> Auditory (lectures)</label>
+          <label><input type="checkbox" value="reading" v-model="formData.learningStyle"> Reading/Writing (docs)</label>
+          <label><input type="checkbox" value="kinaesthetic" v-model="formData.learningStyle"> Kinaesthetic (projects)</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <legend>When learning, what are you most drawn to?</legend>
+        <div class="options-group">
+          <label><input type="radio" value="cutting-edge" v-model="formData.techPreference"> The latest, cutting-edge tech</label>
+          <label><input type="radio" value="stable" v-model="formData.techPreference"> Widely-adopted, stable tech</label>
+          <label><input type="radio" value="mix" v-model="formData.techPreference"> A mix of both</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <legend>What kind of work pace are you most comfortable with?</legend>
+        <div class="options-group">
+          <label><input type="radio" value="fast" v-model="formData.workPace"> Dynamic & Fast-Paced (learning many things)</label>
+          <label><input type="radio" value="focused" v-model="formData.workPace"> Structured & Deep-Focused (mastering one thing)</label>
         </div>
       </fieldset>
       
@@ -63,6 +101,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import MultiSelectDropdown from './MultiSelectDropdown.vue';
+import Typewriter from './Typewriter.vue';
 
 // Define the options for each dropdown
 const sectorOptions = ref([
@@ -152,7 +191,12 @@ const formData = ref({
     genericOther: '',    // For the main 'Other' text box
     customSectorRoles: {} // For the dynamic 'Other' text boxes, e.g., {'Architecture Technology': 'System Architect'}
   },
-  learningStyle: [],
+  ambition: null,       // For Q3 (radio button)
+  passion: [],          // For Q4 (checkboxes)
+  confidence: null,     // For Q5 (radio button)
+  learningStyle: [],    // For Q6 (checkboxes)
+  techPreference: null, // For Q7 (radio button)
+  workPace: null,       // For Q8 (radio button)
 });
 
 // --- DYNAMIC LOGIC ---
@@ -202,7 +246,6 @@ function handleSubmit() {
 
 
 
-
 <style scoped>
 .questionnaire-container {
   width: 400px;
@@ -211,6 +254,11 @@ function handleSubmit() {
   border: 1px solid var(--accent-color); /* ADDED: Accent border */
   border-radius: 8px;
   background-color: var(--background-color); 
+}
+
+.main-title {
+  min-height: 2.5rem; /* Give it some space to type into */
+  font-size: 1.75rem; /* Make the title a bit bigger */
 }
 
 .subtitle {
