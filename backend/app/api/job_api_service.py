@@ -1,7 +1,10 @@
 import requests
 import logging
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 # Get API keys from environment variables
 ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID")
 ADZUNA_APP_KEY = os.getenv("ADZUNA_APP_KEY")

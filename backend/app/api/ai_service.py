@@ -2,6 +2,10 @@ import json
 import google.generativeai as genai
 import logging
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GENAI_API_KEY")
 if not GEMINI_API_KEY:

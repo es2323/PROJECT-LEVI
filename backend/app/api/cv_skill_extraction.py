@@ -4,6 +4,9 @@ import google.generativeai as genai
 import logging
 import json
 import os
+from dotenv import load_dotenv
+# Load environment variables from .env file
+load_dotenv()
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
