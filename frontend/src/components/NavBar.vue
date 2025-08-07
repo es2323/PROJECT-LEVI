@@ -30,12 +30,13 @@
   
   /* Styling */
   background-color: var(--background-color);
-  border-bottom: 1px solid rgba(224, 224, 224, 0.1); /* Subtle border */
+  border-bottom: 3px solid rgba(224, 224, 224, 0.1); /* Subtle border */
 }
 
 .nav-logo a, .nav-links a {
   color: var(--text-color);
   text-decoration: none;
+  font-size: 0.9rem;
   font-weight: 700;
   padding: 0.5rem;
   transition: color 0.2s;
@@ -51,8 +52,9 @@
 }
 
 .cta-button {
-  background-color: #fff;
+  background-color: #ffffff;
   color: #000;
+  font-size: 0.9rem;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-weight: 700;

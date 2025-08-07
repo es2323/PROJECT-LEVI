@@ -1,5 +1,12 @@
 /* frontend/src/style.css */
 
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 /* --- Step 1: Import the Lexend Font --- */
 /* This line imports the Lexend font from Google Fonts. */
 /* We're getting Regular (400) for body text and Bold (700) for headings. */
@@ -8,9 +15,9 @@
 /* --- Step 2: Define Your Color Palette as CSS Variables --- */
 /* Defining colors here allows you to reuse them easily everywhere. */
 :root {
-  --background-color: #1E352F; /* Dark Forest Green */
-  --text-color: #E0E0E0;       /* Light Grey */
-  --accent-color: #E3B448;      /* Mustard Yellow */
+  --background-color: #070F2B; /* Dark Forest Green */
+  --text-color: #FBFBFB;       /* Light Grey */
+  --accent-color: #C5B0CD;      /* Mustard Yellow */
 }
 
 /* --- Step 3: Apply Styles Globally --- */
