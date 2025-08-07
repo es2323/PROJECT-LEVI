@@ -20,7 +20,7 @@ app.add_middleware(
 # --- Include All Routers ---
 app.include_router(cv_skill_extraction.router, prefix="/api")
 app.include_router(job_analyser.router, prefix="/api")
-app.include_router(skill_reevaluation.router, prefix="/api")
+
 
 @app.get("/")
 async def read_root():
