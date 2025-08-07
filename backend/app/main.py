@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from .api.cv_skill_extraction import router as cv_skill_extraction_router
-import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
+from .api import cv_skill_extraction, job_analyser, skill_reevaluation
 
-app = FastAPI(title="CV Upload API", description="Simple API for CV text extraction and skill analysis")
+app = FastAPI(title="Project Levi API")
 
+# --- CORS Middleware ---
 origins = [
-    "http://localhost:5173",  # The origin of your Vue.js frontend
+    "http://localhost:5173",  # The default origin for a Vue.js frontend
 ]
 
 app.add_middleware(
@@ -17,8 +17,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(cv_skill_extraction_router, prefix="/api")
+# --- Include All Routers ---
+app.include_router(cv_skill_extraction.router, prefix="/api")
+app.include_router(job_analyser.router, prefix="/api")
+app.include_router(skill_reevaluation.router, prefix="/api")
 
 @app.get("/")
 async def read_root():
-    return {"message": "Welcome to the CV Upload API!"}
+    return {"message": "Welcome to the Project Levi API!"}
