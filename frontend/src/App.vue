@@ -1,5 +1,6 @@
 <template>
   <div>
+    <NavBar />
     <!-- Section 1: Landing Page -->
     <section id="landing">
       <LandingPage />
@@ -14,11 +15,21 @@
     <section v-if="isQuestionnaireVisible" id="questionnaire">
       <Questionnaire />
     </section>
+
+    <section id="about">
+      <h2>About LEVI</h2>
+      <p>...</p>
+    </section>
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>...</p>
+    </section>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import NavBar from './components/NavBar.vue';
 import LandingPage from './components/LandingPage.vue';
 import CVUploader from './components/CVUploader.vue';
 import Questionnaire from './components/Questionnaire.vue';
@@ -39,6 +50,7 @@ function showQuestionnaire() {
 section {
   min-height: 100vh; /* Ensures each section is full-height */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem;
