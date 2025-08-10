@@ -12,7 +12,7 @@
 
     <!-- Section 3: Questionnaire (hidden until CV is uploaded) -->
     <section v-if="isQuestionnaireVisible" id="questionnaire">
-      <Questionnaire />
+      <Questionnaire :cv-skills="userCvSkills" />
     </section>
   </div>
 </template>
@@ -25,9 +25,15 @@ import Questionnaire from './components/Questionnaire.vue';
 
 const isQuestionnaireVisible = ref(false);
 
-function showQuestionnaire() {
+// 3. The variable is created here
+const userCvSkills = ref([]);
+
+// 4. The function receives the skills and updates the variable
+function showQuestionnaire(skillsFromEmit) {
+  userCvSkills.value = skillsFromEmit;
   isQuestionnaireVisible.value = true;
-  
+  console.log("Skills have been successfully stored in App.vue:", userCvSkills.value);
+
   // This smoothly scrolls the user to the questionnaire after it appears
   setTimeout(() => {
     document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth' });

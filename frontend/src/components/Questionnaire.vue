@@ -102,6 +102,7 @@
 import { ref, computed, watch } from 'vue';
 import MultiSelectDropdown from './MultiSelectDropdown.vue';
 import Typewriter from './Typewriter.vue';
+import axios from 'axios';
 
 // Define the options for each dropdown
 const sectorOptions = ref([
@@ -233,8 +234,42 @@ watch(() => formData.value.sectors, () => {
     }
 });
 
-function handleSubmit() {
-  console.log("Final form data:", formData.value);
+const props = defineProps({
+  cvSkills: Array
+});
+
+const isLoading = ref(false); // Add refs for loading and error states
+const errorMessage = ref('');
+
+async function handleSubmit() {
+  isLoading.value = true;
+  errorMessage.value = '';
+
+  // Create the final payload object with all the data
+  const payload = {
+    cv_skills: props.cvSkills,
+    questionnaire_answers: formData.value
+  };
+
+  console.log("Sending final payload to backend:", payload);
+
+  try {
+    // This is where you would make the API call to the final backend endpoint
+    // For now, we will simulate it. Saul will build the real endpoint.
+    // const response = await axios.post("http://127.0.0.1:8000/api/generate-roadmap", payload);
+
+    // --- SIMULATION FOR NOW ---
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Pretend to wait for the API
+    console.log("Simulated success! Data sent to backend.");
+    // In the future, you would navigate to the results page here.
+    // --- END SIMULATION ---
+    
+  } catch (error) {
+    console.error("Error submitting questionnaire:", error);
+    errorMessage.value = "There was an error submitting your answers.";
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
 
