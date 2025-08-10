@@ -117,9 +117,9 @@ async function handleSubmit() {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     
-    console.log("API Response:", response.data);
+    console.log("Full API Response Data:", response.data);
     // You can handle the extracted skills here later
-    emit('cv-uploaded');
+    emit('cv-uploaded', response.data.skills);
 
   } catch (error) {
     console.error("Error uploading file:", error);
