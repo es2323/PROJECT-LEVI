@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .api import cv_skill_extraction, job_analyser, skill_reevaluation
+from .api import cv_skill_extraction, job_analyser
 
 app = FastAPI(title="Project Levi API")
 
