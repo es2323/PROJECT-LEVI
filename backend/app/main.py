@@ -1,14 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from .api import cv_skill_extraction, job_analyser
+from typing import Tuple, Any
+
+# Import from your session and api files
+from .session import get_session, SessionData
+from .api import cv_skill_extraction, journey # Import the new journey router
 
 app = FastAPI(title="Project Levi API")
 
-# --- CORS Middleware ---
-origins = [
-    "http://localhost:5173",  # The default origin for a Vue.js frontend
-]
-
+# --- Middleware ---
+origins = ["http://localhost:5173"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -17,11 +18,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- Include All Routers ---
+# --- Routers ---
 app.include_router(cv_skill_extraction.router, prefix="/api")
-app.include_router(job_analyser.router, prefix="/api")
+app.include_router(journey.router, prefix="/api") # Use the new journey router
 
+# --- Endpoints ---
 
 @app.get("/")
 async def read_root():
+    """Root endpoint for API health check."""
     return {"message": "Welcome to the Project Levi API!"}
+
+
+@app.get("/api/session-data", response_model=SessionData)
+async def get_current_session_data(
+    session_info: Tuple[Any, SessionData] = Depends(get_session)
+):
+    """Debug endpoint to view the data in the current session."""
+    _, session_data = session_info
+    return session_data
