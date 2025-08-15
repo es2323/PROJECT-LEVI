@@ -24,6 +24,9 @@
       <h2>Contact Us</h2>
       <p>...</p>
     </section>
+    <section id="roadmap">
+      <RoadmapView />
+    </section>
   </div>
 </template>
 
@@ -33,6 +36,8 @@ import NavBar from './components/NavBar.vue';
 import LandingPage from './components/LandingPage.vue';
 import CVUploader from './components/CVUploader.vue';
 import Questionnaire from './components/Questionnaire.vue';
+import RoadmapView from './components/RoadmapView.vue'; // <-- Import the new component
+
 
 const isQuestionnaireVisible = ref(false);
 
