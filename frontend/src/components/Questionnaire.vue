@@ -10,30 +10,43 @@
     
     <form @submit.prevent="handleSubmit" class="form-wrapper">
       <div class="form-group">
-        <label>What tech sector(s) are you most passionate about pursuing?</label>
-        <MultiSelectDropdown 
-          :options="sectorOptions"
-          v-model="formData.sectors"
-          placeholder="Select sectors..."
-        />
+        <label for="sector-select">What tech sector(s) are you most passionate about pursuing?</label>
+        <select id="sector-select" v-model="formData.sector" class="custom-select">
+          <option disabled value="">Please select one</option>
+          <option v-for="option in sectorOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
       </div>
 
-      <div v-if="formData.sectors.length > 0" class="form-group">
-        <label>What type of role(s) do you see yourself doing? Don't worry if you aren't sure yet.</label>
+      <div v-if="formData.sector" class="form-group">
+        <label>What type of role(s) do you see yourself doing? (Select up to 3)</label>
         <div v-for="role in dynamicRoleOptions" :key="role.value" class="checkbox-group">
           <label>
-            <input type="checkbox" :value="role.value" v-model="formData.roles.predefined">
+            <input 
+              type="checkbox" 
+              :value="role.value" 
+              v-model="formData.roles"
+              :disabled="formData.roles.length >= 3 && !formData.roles.includes(role.value)"
+            >
             {{ role.label }}
           </label>
         </div>
 
         <div class="other-group">
-          <label>Enter a custom role!</label>
-          <input type="text" placeholder="e.g., Technical Writer" v-model="formData.roles.genericOther">
-        </div>
-        <div v-for="customSector in customSectors" :key="customSector" class="other-group">
-          <label>What do you have in mind for '{{ customSector }}'?</label>
-          <input type="text" placeholder="Specify role..." v-model="formData.roles.customSectorRoles[customSector]">
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" v-model="isRoleOtherSelected">
+              Other
+            </label>
+          </div>
+          <input 
+            v-if="isRoleOtherSelected"
+            type="text" 
+            placeholder="Please specify a custom role..." 
+            v-model="formData.roleOther"
+            class="other-input"
+          >
         </div>
       </div>
 
@@ -100,10 +113,10 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue';
-import MultiSelectDropdown from './MultiSelectDropdown.vue';
 import Typewriter from './Typewriter.vue';
-import axios from 'axios';
-
+const props = defineProps({
+  cvSkills: Array
+});
 // Define the options for each dropdown
 const sectorOptions = ref([
   { value: 'fintech', label: 'FinTech (Financial Technology) 💰' },
@@ -114,9 +127,17 @@ const sectorOptions = ref([
   { value: 'edtech', label: 'EdTech (Education Technology) 🎓' },
   { value: 'greentech', label: 'GreenTech & Sustainability 🌍' },
   { value: 'cars', label: 'Automotive & Transportation 🚗' },
-  { value: 'gov', label: 'GovTech & Public Sector 🏛️' }
+  { value: 'gov', label: 'GovTech & Public Sector 🏛️' },
+  { value: 'idk', label: "I'm not sure yet, give me general tech roles. 🤔" }// ADDED IDK option
 ]);
 
+const generalRoles = [
+  { value: 'swe', label: 'Graduate Software Engineer' },
+  { value: 'backend', label: 'Backend Developer' },
+  { value: 'frontend', label: 'Frontend Developer' },
+  { value: 'cloud', label: 'Cloud / DevOps Engineer' },
+  { value: 'data_analyst', label: 'Data Analyst' }
+];
 // 1. THE DATA MAP: Maps sectors to their specific roles
 const rolesBySector = {
   fintech: [
@@ -186,12 +207,9 @@ const rolesBySector = {
 
 // Use a single reactive object to hold all form data
 const formData = ref({
-  sectors: [],
-  roles: {
-    predefined: [],      // For checkboxes, e.g., ['quant_dev']
-    genericOther: '',    // For the main 'Other' text box
-    customSectorRoles: {} // For the dynamic 'Other' text boxes, e.g., {'Architecture Technology': 'System Architect'}
-  },
+  sector: '',
+  roles: [], // For the dynamic 'Other' text boxes, e.g., {'Architecture Technology': 'System Architect'}
+  roleOther: '',
   ambition: null,       // For Q3 (radio button)
   passion: [],          // For Q4 (checkboxes)
   confidence: null,     // For Q5 (radio button)
@@ -199,48 +217,33 @@ const formData = ref({
   techPreference: null, // For Q7 (radio button)
   workPace: null,       // For Q8 (radio button)
 });
+const isRoleOtherSelected = ref(false);
+const isLoading = ref(false);
+const errorMessage = ref('');
 
 // --- DYNAMIC LOGIC ---
 
 // Computed property for predefined roles (no change here)
 const dynamicRoleOptions = computed(() => {
-  console.log("Sectors changed:", formData.value.sectors); 
-  if (formData.value.sectors.length === 0) return [];
-  
-  // Use flatMap to get a single list of roles from all selected sectors
-  return formData.value.sectors
-    .filter(sector => rolesBySector[sector])
-    .flatMap(sector => rolesBySector[sector]);
+  const selectedSector = formData.value.sector;
+  if (!selectedSector) return [];
+  if (selectedSector === 'idk') return generalRoles;
+  return rolesBySector[selectedSector] || [];
 });
 
-// 2. NEW COMPUTED PROPERTY for custom sectors
-const customSectors = computed(() => {
-  // Find selections that start with 'other:', then extract the text after the colon
-  return formData.value.sectors
-    .filter(s => s.startsWith('other:'))
-    .map(s => s.split(':')[1]);
+// Watcher to reset roles when the sector changes
+watch(() => formData.value.sector, () => {
+  formData.value.roles = [];
+  formData.value.roleOther = '';
+  isRoleOtherSelected.value = false;
 });
-
-// Watcher to clean up role data when sectors change (slightly updated)
-watch(() => formData.value.sectors, () => {
-    const validRoleValues = dynamicRoleOptions.value.map(option => option.value);
-    formData.value.roles.predefined = formData.value.roles.predefined.filter(role => validRoleValues.includes(role));
-    
-    // Clean up custom roles if the custom sector was removed
-    for (const sectorName in formData.value.roles.customSectorRoles) {
-        if (!customSectors.value.includes(sectorName)) {
-            delete formData.value.roles.customSectorRoles[sectorName];
-        }
-    }
+// Watcher to clear the "Other" text box if the checkbox is unticked
+watch(isRoleOtherSelected, (isSelected) => {
+  if (!isSelected) {
+    formData.value.roleOther = '';
+  }
 });
-
-const props = defineProps({
-  cvSkills: Array
-});
-
-const isLoading = ref(false); // Add refs for loading and error states
-const errorMessage = ref('');
-
+// --- FORM SUBMISSION ---
 async function handleSubmit() {
   isLoading.value = true;
   errorMessage.value = '';
@@ -283,7 +286,7 @@ async function handleSubmit() {
 
 <style scoped>
 .questionnaire-container {
-  width: 400px;
+  width: 700px;
   margin: 2rem auto;
   padding: 2.5rem;
   border: 1px solid var(--accent-color); /* ADDED: Accent border */
@@ -310,8 +313,12 @@ async function handleSubmit() {
 .form-group {
   text-align: left;
 }
-
-label {
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+legend, label {
   display: block;
   margin-bottom: 0.75rem;
   font-weight: 700; 
@@ -334,7 +341,7 @@ button {
 .checkbox-group {
   padding-left: 10px;
 }
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
   accent-color: var(--accent-color);
   margin-right: 0.5rem;
 }
@@ -342,7 +349,7 @@ input[type="checkbox"] {
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(224, 224, 224, 0.2);}
-.other-group input {
+.other-input {
   width: 100%;
   padding: 8px;
   background-color: var(--background-color); 
@@ -350,5 +357,11 @@ input[type="checkbox"] {
   border: 1px solid var(--accent-color); 
   border-radius: 4px;
   margin-top: 0.5rem;
+}
+
+/* Style for disabled checkboxes to give user feedback */
+.checkbox-group input:disabled + span {
+  opacity: 0.5;
+  text-decoration: line-through;
 }
 </style>

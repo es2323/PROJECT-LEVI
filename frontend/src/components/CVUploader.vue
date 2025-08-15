@@ -134,13 +134,15 @@ async function handleSubmit() {
 
 .cv-uploader {
   width: 100%;
-  max-width: 650px;
+  max-width: 1200px;
   margin: 2rem auto;
-  padding: 2.5rem;
+  padding: 3rem;
   border: 2px solid var(--accent-color); 
-  border-radius: 8px;
+  border-radius: 1000px;
   text-align: center;
   transition: background-color 0.3s, border-style 0.3s;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* ADDED: A subtle shadow to lift the element */
+
 }
 .cv-uploader.is-dragging {
   border-style: dashed;
@@ -152,34 +154,41 @@ async function handleSubmit() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.5rem;
   color: var(--text-color);
-  opacity: 0.7;
+  opacity: 1;
+  font-size: 2rem; /* ADDED: A larger, unified font size for this section */
+
 }
 
 .drop-zone-content svg {
+  width: 80px; /* ADDED: Made the icon bigger */
+  height: 80px;
   stroke: var(--accent-color);
+  opacity: 0.8;
 }
 
 .browse-text {
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
+  font-size: 1rem; /* CHANGED: Unified font size, made it slightly smaller than main text */
+  margin: 0; /* REMOVED: Simplified margin */
+  opacity: 0.7;
 }
 
 .file-upload-label {
-  padding: 0.5rem 1rem;
+  width: 20%;
+  padding: 0.75rem 1.5rem;
   background-color: var(--accent-color); 
   color: var(--background-color);
   font-weight: 700; 
   font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 40px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: transform 0.2s;
   display: inline-block;
 }
 
 .file-upload-label:hover {
-  background-color:  #cda240;
+  transform: scale(1.05); /* ADDED: A more interactive hover effect */
 }
 
 .file-input-hidden {
@@ -191,26 +200,29 @@ async function handleSubmit() {
 }
 
 .file-name {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--text-color); 
   opacity: 0.9;
 }
 
 .submit-button {
-  width: 100%;
+  width: 50%;
   margin-top: 1.5rem;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.5rem;
   background-color: var(--accent-color);
   color: var(--background-color);
   font-weight: 700;
-  border-radius: 4px;
+  font-size: 1.25rem; /* CHANGED: Made font bigger */
+
+  border-radius: 50px;
   border: none;
   cursor: pointer;
+  transition: opacity 0.2s; /* ADDED: Transition for disabled state */
+
 }
 
 .submit-button:disabled {
-  background-color: #8c7127;
+  background-color: var(--accent-color);
   cursor: not-allowed;
   opacity: 0.6;
 
