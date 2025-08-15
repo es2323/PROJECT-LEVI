@@ -1,5 +1,6 @@
 <template>
   <nav class="navbar">
+    <div class="nav-left">
     <div class="nav-logo">
       <a href="#landing">LEVI</a>
     </div>
@@ -7,6 +8,7 @@
       <a href="#upload">How It Works</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
+      </div>
     </div>
     <div class="nav-cta">
       <a href="#upload" class="cta-button">Get Started</a>
@@ -31,6 +33,11 @@
   /* Styling */
   background-color: var(--background-color);
   border-bottom: 3px solid rgba(224, 224, 224, 0.1); /* Subtle border */
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem; /* Adds space between the logo and the links */
 }
 
 .nav-logo a, .nav-links a {
