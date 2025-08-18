@@ -55,7 +55,7 @@ import Typewriter from './Typewriter.vue';
   color: var(--background-color);
   font-weight: 700;
   text-decoration: none;
-  border-radius: 40px;
+  border-radius: 60px;
   transition: transform 0.2s;
 }
 

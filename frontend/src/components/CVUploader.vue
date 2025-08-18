@@ -198,7 +198,6 @@ async function handleSubmit() {
 
 .browse-text {
   font-size: 1rem; /* CHANGED: Unified font size, made it slightly smaller than main text */
-  margin: 0; /* REMOVED: Simplified margin */
   opacity: 0.7;
 }
 
@@ -209,7 +208,7 @@ async function handleSubmit() {
   color: var(--background-color);
   font-weight: 700; 
   font-size: 1rem;
-  border-radius: 20px;
+  border-radius: 6px;
   cursor: pointer;
   transition: transform 0.2s;
   display: inline-block;
