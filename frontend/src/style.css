@@ -32,16 +32,16 @@ html {
 /*Colors*/
 :root {
   --background-color: #070F2B; 
-  --text-color: #FBFBFB;       
-  --accent-color: #C5B0CD;      
+  --text-color: #ffffff;       
+  --accent-color: #C0C9EE;      
 }
 
 /* --- Step 3: Apply Styles Globally --- */
 /* These styles apply to the entire application. */
 body {
-  background: linear-gradient(-45deg, #070F2B, #535C91, #070F2B);
+  background: linear-gradient(-45deg, #C0C9EE, #070F2B, #8E7DBE);
   background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+  animation: gradient 40s ease infinite;
   
   color: var(--text-color);
   font-family: 'Satoshi', sans-serif;

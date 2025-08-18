@@ -162,7 +162,7 @@ async function handleSubmit() {
   border: 1px solid rgba(251, 251, 251, 0.1);
   
   /* A slightly larger radius looks better with glass */
-  border-radius: 16px; 
+  border-radius: 20px; 
   
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
