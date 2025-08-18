@@ -15,7 +15,6 @@
       <a href="#faqs">FAQs</a>
       </div>
 >>>>>>> Stashed changes
-    </div>
     <div class="nav-cta">
       <a href="#upload" class="cta-button">Get Started for Free</a>
     </div>
