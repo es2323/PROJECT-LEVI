@@ -4,12 +4,20 @@
       <a href="#landing">LEVI</a>
     </div>
     <div class="nav-links">
+<<<<<<< Updated upstream
       <a href="#upload">How It Works</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
+=======
+      <a href="#samplemap">Sample Roadmap</a>
+      <a href="#upload">The Proccess</a>
+      <a href="#about">Why Levi?</a>
+      <a href="#faqs">FAQs</a>
+      </div>
+>>>>>>> Stashed changes
     </div>
     <div class="nav-cta">
-      <a href="#upload" class="cta-button">Get Started</a>
+      <a href="#upload" class="cta-button">Get Started for Free</a>
     </div>
   </nav>
 </template>

@@ -1,5 +1,4 @@
 <template>
-  <!-- The main container for the uploader -->
   <div 
     class="cv-uploader" 
     :class="{ 'is-dragging': isDragging }"
@@ -7,47 +6,39 @@
     @dragleave.prevent="handleDragLeave"
     @drop.prevent="handleDrop"
   >
-    <!-- This form now contains everything, including the drop zone content -->
-    <form @submit.prevent="handleSubmit" class="upload-form">
-      <!-- This is the visual drop zone area -->
-      <div class="drop-zone-content">
-        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="17 8 12 3 7 8"></polyline>
-          <line x1="12" y1="3" x2="12" y2="15"></line>
-        </svg>
-        
-        <p>Drag & Drop your CV here</p>
-        <p class="browse-text">OR</p>
-        
-        <!-- The label acts as a button to trigger the hidden file input -->
-        <label for="cv-upload-input" class="file-upload-label">
-          Browse Files
-        </label>
-        <input id="cv-upload-input" type="file" @change="handleFileChange" accept=".pdf" class="file-input-hidden" />
-      </div>
-
-      <!-- This section shows the selected file name -->
-      <div v-if="selectedFile" class="file-name-container">
-        <p class="file-name">Selected: {{ selectedFile.name }}</p>
-      </div>
-      
-      <!-- The main submit button -->
-      <button v-if="!isLoading" type="submit" :disabled="!selectedFile" class="submit-button">
-        Analyse CV
-      </button>
-    </form>
-
-    <!-- This section shows the loading spinner -->
-    <div v-if="isLoading" class="spinner-container">
-      <div class="spinner"></div>
-      <p>Analysing your skills...</p>
+    <div v-if="!selectedFile && !isLoading" class="drop-zone-content">
+      <svg class="upload-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="17 8 12 3 7 8"></polyline>
+        <line x1="12" y1="3" x2="12" y2="15"></line>
+      </svg>
+      <p class="drop-zone-title">Drag & Drop Your CV</p>
+      <p class="browse-text">or</p>
+      <label for="cv-upload-input" class="file-upload-label">Browse Files</label>
+      <input id="cv-upload-input" type="file" @change="handleFileChange" accept=".pdf" class="file-input-hidden" />
     </div>
 
-    <!-- This section shows any error messages -->
+    <div v-if="selectedFile && !isLoading" class="confirmation-content">
+      <svg class="pdf-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+      </svg>
+      <p class="file-name-display">{{ selectedFile.name }}</p>
+      <button @click="removeFile" type="button" class="remove-file-button">Remove File</button>
+      <button @click="handleSubmit" type="button" class="submit-button">Analyse CV</button>
+    </div>
+    
+    <div v-if="isLoading" class="spinner-container">
+      <div class="spinner"></div>
+      <p class="loading-text">{{ loadingStatus }}</p>
+    </div>
+
     <div v-if="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
+
   </div>
 </template>
 
@@ -58,10 +49,10 @@ import axios from 'axios';
 // Create reactive variables to hold the selected file and the extracted text
 const emit = defineEmits(['cv-uploaded']);
 const selectedFile = ref(null);
-const extractedText = ref('');
 const errorMessage = ref('');
 const isLoading = ref(false);
 const isDragging = ref(false);
+const loadingStatus = ref('');
 
 // --- File Handling Logic ---
 
@@ -88,6 +79,10 @@ function handleDragOver() {
   isDragging.value = true;
 }
 
+function removeFile() {
+  selectedFile.value = null;
+}
+
 function handleDragLeave() {
   isDragging.value = false;
 }
@@ -109,6 +104,26 @@ async function handleSubmit() {
   isLoading.value = true;
   errorMessage.value = '';
 
+  // 2. Start cycling through loading messages
+  const statuses = [
+    "Connecting to server...",
+    "Extracting text from your CV...",
+    "AI is analyzing your skills...",
+    "Finalizing results..."
+  ];
+  let statusIndex = 0;
+  loadingStatus.value = statuses[statusIndex];
+
+  const statusInterval = setInterval(() => {
+    statusIndex++;
+    if (statusIndex < statuses.length) {
+      loadingStatus.value = statuses[statusIndex];
+    } else {
+      // If we run out of messages, just hold on the last one
+      clearInterval(statusInterval);
+    }
+  }, 2000); // Change message every 2 seconds
+
   const formData = new FormData();
   formData.append("file", selectedFile.value);
 
@@ -118,13 +133,14 @@ async function handleSubmit() {
     });
     
     console.log("Full API Response Data:", response.data);
-    // You can handle the extracted skills here later
     emit('cv-uploaded', response.data.skills);
 
   } catch (error) {
     console.error("Error uploading file:", error);
-    errorMessage.value = "An error occurred while uploading the file. Please try again.";
+    errorMessage.value = "An error occurred while uploading the file.";
   } finally {
+    // 3. Clean up when done
+    clearInterval(statusInterval);
     isLoading.value = false;
   }
 }
@@ -134,11 +150,11 @@ async function handleSubmit() {
 
 .cv-uploader {
   width: 100%;
-  max-width: 1200px;
+  max-width: 700px;
   margin: 2rem auto;
   padding: 3rem;
   border: 2px solid var(--accent-color); 
-  border-radius: 1000px;
+  border-radius: 8px;
   text-align: center;
   transition: background-color 0.3s, border-style 0.3s;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* ADDED: A subtle shadow to lift the element */
@@ -146,7 +162,7 @@ async function handleSubmit() {
 }
 .cv-uploader.is-dragging {
   border-style: dashed;
-  background-color: rgba(227, 180, 72, 0.05);
+  background-color: rgba(197, 176, 205, 0.05); /* Use your new accent color */
 }
 
 .drop-zone-content {
@@ -154,18 +170,20 @@ async function handleSubmit() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  color: var(--text-color);
-  opacity: 1;
-  font-size: 2rem; /* ADDED: A larger, unified font size for this section */
-
+  gap: 1rem;
 }
-
-.drop-zone-content svg {
-  width: 80px; /* ADDED: Made the icon bigger */
-  height: 80px;
+.upload-icon {
   stroke: var(--accent-color);
   opacity: 0.8;
+  animation: pulse 2.5s infinite; /* ADDED: Pulsing animation */
+}
+
+/* NEW: Style for the main title */
+.drop-zone-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0.5rem 0;
 }
 
 .browse-text {
@@ -181,7 +199,7 @@ async function handleSubmit() {
   color: var(--background-color);
   font-weight: 700; 
   font-size: 1rem;
-  border-radius: 40px;
+  border-radius: 4px;
   cursor: pointer;
   transition: transform 0.2s;
   display: inline-block;
@@ -195,65 +213,81 @@ async function handleSubmit() {
   display: none; 
 }
 
-.file-name-container {
-  margin-top: 1rem;
+.confirmation-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
 }
 
-.file-name {
-  font-size: 1rem;
-  color: var(--text-color); 
-  opacity: 0.9;
+.pdf-icon {
+  stroke: var(--accent-color);
+  margin-bottom: 1rem;
+}
+
+.file-name-display {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.remove-file-button {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  opacity: 0.6;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: -0.5rem; /* Tucks it closer to the filename */
+  margin-bottom: 1.5rem;
 }
 
 .submit-button {
-  width: 50%;
-  margin-top: 1.5rem;
+  width: 80%;
   padding: 1rem 1.5rem;
   background-color: var(--accent-color);
   color: var(--background-color);
   font-weight: 700;
-  font-size: 1.25rem; /* CHANGED: Made font bigger */
-
+  font-size: 1.25rem;
   border-radius: 50px;
   border: none;
   cursor: pointer;
-  transition: opacity 0.2s; /* ADDED: Transition for disabled state */
-
+  transition: transform 0.2s;
 }
 
-.submit-button:disabled {
-  background-color: var(--accent-color);
-  cursor: not-allowed;
-  opacity: 0.6;
-
+.submit-button:hover {
+  transform: scale(1.02);
 }
 
-/* Add this new class for visual feedback */
-.cv-uploader.is-dragging {
-  border-style: dashed;
-  border-color: var(--accent-color);
-  background-color: rgba(227, 180, 72, 0.1); /* Faint accent color */
+/* NEW: Keyframes for the pulsing icon */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+}
+
 }
 .spinner-container {
   margin-top: 1.5rem;
-}
-.spinner {
-  border: 4px solid rgba(224, 224, 224, 0.3);
-  border-top: 4px solid var(--accent-color);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.error-message {
-  margin-top: 1rem;
-  color: #ff7f7f;
-  font-weight: bold;
+/* ADD this new style for the text */
+.loading-text {
+  font-weight: 500;
+  opacity: 0.8;
+  transition: opacity 0.5s ease-in-out;
 }
 </style>

@@ -55,7 +55,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* This creates the blinking cursor effect */
+/* The blinking animation has been removed from here */
 .cursor {
   font-weight: 700;
   color: var(--accent-color);
@@ -64,17 +64,5 @@ onMounted(() => {
 
 .cursor.is-blinking {
   animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 </style>

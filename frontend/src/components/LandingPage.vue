@@ -3,17 +3,17 @@
   <div class="landing-container">
     <h1 class="main-title">
       <Typewriter 
-        text="Welcome to Project Levi."
-        :speed="80"
+        text="Welcome to Project Levi"
+        speed="80"
       />
     </h1>
     <p class="subtitle">
         <Typewriter
-        text='Upload your CV.    <br>
-        Answer a few questions about your career goals.    <br>
-        Let Levi build the perfect roadmap for you.'
-        :speed="60"
-        :delay="2500"
+        text='Upload your CV    <br>
+        Answer a few questions    <br>
+        Let Levi build a roadmap for you'
+        speed="80"
+        :delay="2000"
       />
     </p>
     <a href="#upload" class="cta-button">Get Started</a>
