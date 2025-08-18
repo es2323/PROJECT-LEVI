@@ -39,12 +39,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
-<<<<<<< Updated upstream
-
-html {
-  scroll-behavior: smooth;
-}
-=======
 /* Add this to the bottom of frontend/src/style.css */
 
 @keyframes blink {
@@ -58,4 +52,3 @@ html {
     opacity: 1;
   }
 }
->>>>>>> Stashed changes

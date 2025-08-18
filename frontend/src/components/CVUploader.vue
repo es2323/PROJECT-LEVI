@@ -151,22 +151,19 @@ async function handleSubmit() {
 .cv-uploader {
   width: 100%;
   max-width: 700px;
-  margin: 2rem auto;
-  padding: 3rem;
-  border: 2px solid var(--accent-color); 
-  border-radius: 8px;
   text-align: center;
-  transition: background-color 0.3s, border-style 0.3s;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* ADDED: A subtle shadow to lift the element */
 
 }
 .cv-uploader.is-dragging {
   border-style: dashed;
+  border-radius: 20px;
   background-color: rgba(197, 176, 205, 0.05); /* Use your new accent color */
 }
 
 .drop-zone-content {
-  padding: 2rem;
+  padding: 3rem;
+  border: 2px dashed rgba(251, 251, 251, 0.2);
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -193,13 +190,13 @@ async function handleSubmit() {
 }
 
 .file-upload-label {
-  width: 20%;
+  width: 30%;
   padding: 0.75rem 1.5rem;
   background-color: var(--accent-color); 
   color: var(--background-color);
   font-weight: 700; 
   font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
   transition: transform 0.2s;
   display: inline-block;
@@ -250,7 +247,7 @@ async function handleSubmit() {
   color: var(--background-color);
   font-weight: 700;
   font-size: 1.25rem;
-  border-radius: 50px;
+  border-radius: 20px;
   border: none;
   cursor: pointer;
   transition: transform 0.2s;
