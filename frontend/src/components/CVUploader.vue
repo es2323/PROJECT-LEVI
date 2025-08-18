@@ -152,6 +152,19 @@ async function handleSubmit() {
   width: 100%;
   max-width: 700px;
   text-align: center;
+  background: rgba(251, 251, 251, 0.05);
+  
+  /* The blur effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* A subtle border to define the edge of the glass */
+  border: 1px solid rgba(251, 251, 251, 0.1);
+  
+  /* A slightly larger radius looks better with glass */
+  border-radius: 16px; 
+  
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
 }
 .cv-uploader.is-dragging {
@@ -241,7 +254,7 @@ async function handleSubmit() {
 }
 
 .submit-button {
-  width: 80%;
+  width: 40%;
   padding: 1rem 1.5rem;
   background-color: var(--accent-color);
   color: var(--background-color);

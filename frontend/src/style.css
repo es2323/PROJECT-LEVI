@@ -39,20 +39,31 @@ html {
 /* --- Step 3: Apply Styles Globally --- */
 /* These styles apply to the entire application. */
 body {
-  /* Apply the background and text colors */
-  background-color: var(--background-color);
+  background: linear-gradient(-45deg, #070F2B, #535C91, #070F2B);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  
   color: var(--text-color);
   font-family: 'Satoshi', sans-serif;
-
-  
   margin: 0;
 }
 
+/* This is the animation for the background */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 /* --- Step 4: Set a Default Style for Headings --- */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
-<<<<<<< HEAD
 /* Add this to the bottom of frontend/src/style.css */
 
 @keyframes blink {
@@ -66,5 +77,3 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
   }
 }
-=======
->>>>>>> roadmapcreation

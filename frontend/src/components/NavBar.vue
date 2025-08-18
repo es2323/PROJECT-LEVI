@@ -1,23 +1,15 @@
 <template>
   <nav class="navbar">
-    <div class="nav-left">
+    <div class="nav-left"></div>div>
     <div class="nav-logo">
       <a href="#landing">LEVI</a>
     </div>
     <div class="nav-links">
-<<<<<<< HEAD
       <a href="#samplemap">Sample Roadmap</a>
       <a href="#upload">The Proccess</a>
       <a href="#about">Why Levi?</a>
       <a href="#faqs">FAQs</a>
       </div>
-=======
-      <a href="#upload">How It Works</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-      </div>
-    </div>
->>>>>>> roadmapcreation
     <div class="nav-cta">
       <a href="#upload" class="cta-button">Get Started for Free</a>
     </div>
