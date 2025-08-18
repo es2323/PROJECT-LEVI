@@ -1,14 +1,23 @@
 <template>
   <nav class="navbar">
+    <div class="nav-left">
     <div class="nav-logo">
       <a href="#landing">LEVI</a>
     </div>
     <div class="nav-links">
+<<<<<<< HEAD
       <a href="#samplemap">Sample Roadmap</a>
       <a href="#upload">The Proccess</a>
       <a href="#about">Why Levi?</a>
       <a href="#faqs">FAQs</a>
       </div>
+=======
+      <a href="#upload">How It Works</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      </div>
+    </div>
+>>>>>>> roadmapcreation
     <div class="nav-cta">
       <a href="#upload" class="cta-button">Get Started for Free</a>
     </div>
@@ -32,6 +41,11 @@
   /* Styling */
   background-color: var(--background-color);
   border-bottom: 3px solid rgba(224, 224, 224, 0.1); /* Subtle border */
+}
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem; /* Adds space between the logo and the links */
 }
 
 .nav-logo a, .nav-links a {

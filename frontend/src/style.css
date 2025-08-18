@@ -1,23 +1,39 @@
 /* frontend/src/style.css */
 
+/*Font*/
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Regular.otf') format('opentype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Medium.otf') format('opentype');
+  font-weight: 500; /* Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Bold.otf') format('opentype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
 html {
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
-/* --- Step 1: Import the Lexend Font --- */
-/* This line imports the Lexend font from Google Fonts. */
-/* We're getting Regular (400) for body text and Bold (700) for headings. */
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap');
-
-/* --- Step 2: Define Your Color Palette as CSS Variables --- */
-/* Defining colors here allows you to reuse them easily everywhere. */
+/*Colors*/
 :root {
-  --background-color: #070F2B; /* Dark Forest Green */
-  --text-color: #FBFBFB;       /* Light Grey */
-  --accent-color: #C5B0CD;      /* Mustard Yellow */
+  --background-color: #070F2B; 
+  --text-color: #FBFBFB;       
+  --accent-color: #C5B0CD;      
 }
 
 /* --- Step 3: Apply Styles Globally --- */
@@ -26,19 +42,17 @@ body {
   /* Apply the background and text colors */
   background-color: var(--background-color);
   color: var(--text-color);
+  font-family: 'Satoshi', sans-serif;
 
-  /* Set Lexend as the default font for everything */
-  font-family: 'Lexend', sans-serif;
   
-  /* A nice reset for margins */
   margin: 0;
 }
 
 /* --- Step 4: Set a Default Style for Headings --- */
-/* This makes all headings bold by default, creating a clear hierarchy. */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
+<<<<<<< HEAD
 /* Add this to the bottom of frontend/src/style.css */
 
 @keyframes blink {
@@ -52,3 +66,5 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
   }
 }
+=======
+>>>>>>> roadmapcreation
