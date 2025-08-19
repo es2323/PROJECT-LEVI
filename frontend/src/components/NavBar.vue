@@ -4,12 +4,13 @@
       <div class="nav-logo">
         <a href="#landing">LEVI</a>
       </div>
-      <div class="nav-links">
-        <a href="#upload">How It Works</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+      <div class="nav-links"> 
+      <a href="#samplemap">Sample Roadmap</a>
+      <a href="#upload">The Proccess</a>
+      <a href="#about">Why Levi?</a>
+      <a href="#faqs">FAQs</a>
       </div>
-    </div>
+      </div>
     
     <div class="nav-cta">
       <a href="#upload" class="cta-button">Get Started for Free</a>
