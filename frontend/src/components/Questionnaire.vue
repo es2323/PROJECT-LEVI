@@ -2,15 +2,15 @@
   <div class="questionnaire-container">
         <h2 class="main-title">
       <Typewriter 
-        text="Tell us more about your goals!" 
-        :speed="50"
+        text="Lets understand your goals better!" 
+        :speed="90"
       />
     </h2>
-    <p class="subtitle">This will help Levi build the perfect roadmap for you.</p>
+    <p class="subtitle">This will help Levi build the perfect roadmap for you</p>
     
     <form @submit.prevent="handleSubmit" class="form-wrapper">
       <div class="form-group">
-        <label for="sector-select">What tech sector(s) are you most passionate about pursuing?</label>
+        <label for="sector-select">Which tech sector are you most passionate about pursuing?</label>
         <select id="sector-select" v-model="formData.sector" class="custom-select">
           <option disabled value="">Please select one</option>
           <option v-for="option in sectorOptions" :key="option.value" :value="option.value">
@@ -20,7 +20,7 @@
       </div>
 
       <div v-if="formData.sector" class="form-group">
-        <label>What type of role(s) do you see yourself doing? (Select up to 3)</label>
+        <label>What type of roles do you see yourself doing? (Select up to 3)</label>
         <div v-for="role in dynamicRoleOptions" :key="role.value" class="checkbox-group">
           <label>
             <input 
@@ -119,16 +119,16 @@ const props = defineProps({
 });
 // Define the options for each dropdown
 const sectorOptions = ref([
-  { value: 'fintech', label: 'FinTech (Financial Technology) 💰' },
-  { value: 'healthtech', label: 'HealthTech (Healthcare Technology) 🩺' },
-  { value: 'ai_ml', label: 'AI / Machine Learning 🤖' },
-  { value: 'ecommerce', label: 'E-commerce & Retail 🛍️' },
-  { value: 'game', label: 'Gaming & Entertainment 🎮' },
-  { value: 'edtech', label: 'EdTech (Education Technology) 🎓' },
-  { value: 'greentech', label: 'GreenTech & Sustainability 🌍' },
-  { value: 'cars', label: 'Automotive & Transportation 🚗' },
-  { value: 'gov', label: 'GovTech & Public Sector 🏛️' },
-  { value: 'idk', label: "I'm not sure yet, give me general tech roles. 🤔" }// ADDED IDK option
+  { value: 'fintech', label: 'FinTech (Financial Technology)' },
+  { value: 'healthtech', label: 'HealthTech (Healthcare Technology)' },
+  { value: 'ai_ml', label: 'AI / Machine Learning ' },
+  { value: 'ecommerce', label: 'E-commerce & Retail ' },
+  { value: 'game', label: 'Gaming & Entertainment' },
+  { value: 'edtech', label: 'EdTech (Education Technology)' },
+  { value: 'greentech', label: 'GreenTech & Sustainability' },
+  { value: 'cars', label: 'Automotive & Transportation ' },
+  { value: 'gov', label: 'GovTech & Public Sector' },
+  { value: 'idk', label: "I'm not sure yet, give me general tech roles " }// ADDED IDK option
 ]);
 
 const generalRoles = [
@@ -286,22 +286,32 @@ async function handleSubmit() {
 
 <style scoped>
 .questionnaire-container {
-  width: 700px;
+  width: 900px;
   margin: 2rem auto;
-  padding: 2.5rem;
-  border: 1px solid var(--accent-color); /* ADDED: Accent border */
-  border-radius: 8px;
+  padding: 4rem;
+  border-radius: 50px;
   background-color: var(--background-color); 
+  text-align: center;
+    /* --- The Glass Effect --- */
+  background: rgba(251, 251, 251, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(251, 251, 251, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .main-title {
-  min-height: 2.5rem; /* Give it some space to type into */
-  font-size: 1.75rem; /* Make the title a bit bigger */
+  min-height: 2rem; /* Give it some space to type into */
+  font-size: 3rem;
+  font-weight: 500;
+  margin-bottom: 0; /* Make the title a bit bigger */
 }
 
 .subtitle {
   margin-bottom: 2rem;
   opacity: 0.8;
+  font-size: 1.5rem;
 }
 
 .form-wrapper {
@@ -311,7 +321,7 @@ async function handleSubmit() {
 }
 
 .form-group {
-  text-align: left;
+  text-align: justify;
 }
 fieldset {
   border: none;
@@ -321,21 +331,45 @@ fieldset {
 legend, label {
   display: block;
   margin-bottom: 0.75rem;
-  font-weight: 700; 
+  font-weight: 300; 
+  font-size: 1.1rem;
 }
 
 button {
   background-color: var(--accent-color);
-  color: var(--background-color); /* CHANGED: Use dark background for text */
-  width: 100%;
-  border: 0;
+  color: var(--background-color);
   padding: 12px 0;
   margin-top: 1rem;
   text-align: center;
-  font-weight: bold;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 1.1rem;
   cursor: pointer;
-  border-radius: 4px; 
+  border-radius: 60px; 
+}
+
+.custom-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+
+  /* --- The Dark Theme Styling --- */
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--accent-color);
+  border-radius: 6px;
+
+  /* --- The Trick to Style the Arrow --- */
+  /* 1. Hide the default browser arrow */
+  -webkit-appearance: none;
+  appearance: none;
+
+  /* 2. Add your own custom arrow (a chevron SVG) */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23C5B0CD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.2em;
 }
 
 .checkbox-group {
@@ -350,7 +384,7 @@ input[type="checkbox"], input[type="radio"] {
   padding-top: 1rem;
   border-top: 1px solid rgba(224, 224, 224, 0.2);}
 .other-input {
-  width: 100%;
+  width: 40%;
   padding: 8px;
   background-color: var(--background-color); 
   color: var(--text-color); 

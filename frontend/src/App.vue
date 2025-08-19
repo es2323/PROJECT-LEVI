@@ -6,16 +6,21 @@
       <LandingPage />
     </section>
 
-    <!-- Section 2: CV Uploader -->
-    <section id="upload">
-      <CVUploader @cv-uploaded="showQuestionnaire" />
-    </section>
+   <Transition name="fade" mode="out-in">
+      <div class="main-content" :key="currentView">
+      <section v-if="currentView === 'uploader'" id="upload">
+        <CVUploader @cv-uploaded="handleCvUploaded" />
+      </section>
 
-    <!-- Section 3: Questionnaire (hidden until CV is uploaded) -->
-    <section v-if="isQuestionnaireVisible" id="questionnaire">
-      <Questionnaire :cv-skills="userCvSkills" />
-    </section>
+      <section v-else-if="currentView === 'transition'" id="transition">
+        <TransitionScreen @continue-to-questionnaire="handleContinue" />
+      </section>
 
+      <section v-else-if="currentView === 'questionnaire'" id="questionnaire">
+        <Questionnaire :cv-skills="userCvSkills" />
+      </section>
+      </div>
+      </Transition>
     <section id="about">
       <h2>About LEVI</h2>
       <p>...</p>
@@ -35,24 +40,35 @@ import { ref } from 'vue';
 import NavBar from './components/NavBar.vue';
 import LandingPage from './components/LandingPage.vue';
 import CVUploader from './components/CVUploader.vue';
+import TransitionScreen from './components/TransitionScreen.vue'; 
+
 import Questionnaire from './components/Questionnaire.vue';
 import RoadmapView from './components/RoadmapView.vue'; // <-- Import the new component
 
 
-const isQuestionnaireVisible = ref(false);
+const currentView = ref('uploader'); // Possible values: 'uploader', 'transition', 'questionnaire'
 
 // 3. The variable is created here
 const userCvSkills = ref([]);
 
-// 4. The function receives the skills and updates the variable
-function showQuestionnaire(skillsFromEmit) {
-  userCvSkills.value = skillsFromEmit;
-  isQuestionnaireVisible.value = true;
-  console.log("Skills have been successfully stored in App.vue:", userCvSkills.value);
-
-  // This smoothly scrolls the user to the questionnaire after it appears
+// 3. This function now changes the view to 'transition'
+function handleCvUploaded(skills) {
+  userCvSkills.value = skills;
+  currentView.value = 'transition';
+  
+  // Scroll to the new section
   setTimeout(() => {
-    document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('transition')?.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
+// 4. This new function changes the view to 'questionnaire'
+function handleContinue() {
+  currentView.value = 'questionnaire';
+  
+  // Scroll to the questionnaire
+  setTimeout(() => {
+    document.getElementById('questionnaire')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
 }
 </script>
@@ -64,6 +80,16 @@ section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.7s ease;
+}
+
+/* The state an element is in before it enters (hidden) */
+.fade-enter-from,
+/* The state an element is in after it leaves (hidden) */
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

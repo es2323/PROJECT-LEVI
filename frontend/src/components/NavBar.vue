@@ -34,6 +34,7 @@
   /* Styling */
   background-color: var(--background-color);
   border-bottom: 0.5px solid var(--accent-color);
+  
 }
 
 .nav-left {

@@ -19,6 +19,10 @@
     </div>
 
     <div v-if="selectedFile && !isLoading" class="confirmation-content">
+    <button @click="handleSubmit" type="button" class="submit-button">Analyse CV</button>
+  <button @click="emit('cv-uploaded')" type="button" class="test-button">
+    Skip to Questionnaire (Test)
+  </button>
       <svg class="pdf-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
@@ -298,5 +302,14 @@ async function handleSubmit() {
   font-weight: 500;
   opacity: 0.8;
   transition: opacity 0.5s ease-in-out;
+}
+.test-button {
+  margin-top: 1rem;
+  background: none;
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
 }
 </style>
