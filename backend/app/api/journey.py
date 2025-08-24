@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from collections import Counter
 import logging
 from typing import List, Dict, Tuple, Any
+from ..models import FinalPayload
 
 # Import shared components
 from ..session import get_session, SessionData, backend
@@ -33,40 +34,18 @@ class JourneyPayload(BaseModel):
 
 @router.post("/submit-journey")
 async def submit_journey_data(
-        payload: JourneyPayload,
-        session_info: Tuple[Any, SessionData] = Depends(get_session)
+    payload: FinalPayload,
+    session_info: Tuple[Any, SessionData] = Depends(get_session)
 ):
-    """
-    A single endpoint to process job roles and questionnaire answers.
-    """
     session_id, session_data = session_info
-    logger.info(f"Processing full journey data for session_id: {session_id}")
 
-    # --- 1. Perform Job Market Analysis ---
-    target_roles = set(payload.roles.predefined)
-    if payload.roles.genericOther:
-        target_roles.add(payload.roles.genericOther)
-    target_roles.update(payload.roles.customSectorRoles.values())
+    # Save the CV skills and validated questionnaire answers to the session
+    session_data.cv_skills = payload.cv_skills
+    session_data.questionnaire_data = payload.questionnaire_answers
 
-    if target_roles:
-        all_market_skills = []
-        for role in target_roles:
-            job_descriptions = get_job_listings(job_title=role)
-            for desc in job_descriptions:
-                skills = extract_skills_from_job_description(desc)
-                all_market_skills.extend(skills)
-
-        skill_counts = Counter(all_market_skills)
-        most_common_skills = [{"skill": item, "count": count} for item, count in skill_counts.most_common(20)]
-        session_data.job_requirements = most_common_skills
-        logger.info(f"Saved {len(most_common_skills)} job requirements for session {session_id}")
-
-    # --- 2. Save Questionnaire Data ---
-    session_data.questionnaire_data = payload.dict()
-    logger.info(f"Saved questionnaire data for session {session_id}")
-
-    # --- 3. Update the session in one go ---
     await backend.update(session_id, session_data)
 
-    return {"message": "Journey data saved successfully."}
+    # ... (The market analysis logic can now be triggered here) ...
+
+    return {"message": "Complete journey data saved successfully."}
 
