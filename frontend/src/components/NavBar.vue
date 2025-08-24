@@ -32,9 +32,20 @@
   align-items: center;
   padding: 1rem 2.5rem;  
   /* Styling */
-  background-color: var(--background-color);
+  background-color: rgba(251, 251, 251, 0.05);
   border-bottom: 0.5px solid var(--accent-color);
   
+    /* The blur effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* A subtle border to define the edge of the glass */
+  border: 1px solid rgba(251, 251, 251, 0.1);
+  
+  /* A slightly larger radius looks better with glass */
+  border-radius: 0px; 
+  
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .nav-left {
