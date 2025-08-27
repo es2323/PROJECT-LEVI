@@ -345,7 +345,7 @@ function handleSubmit() {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(251, 251, 251, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
+  border-radius: 12px;
   width: 100%;
   max-width: 800px;
   margin: 2rem auto;
@@ -381,7 +381,7 @@ legend {
   width: 100%;
   height: 4px;
   background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  border-radius: 12px;
   margin-bottom: 3rem;
   overflow: hidden;
 }
@@ -417,7 +417,7 @@ label:has(input:disabled) {
 .prev-button, .next-button, .submit-button {
   padding: 0.75rem 2rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
