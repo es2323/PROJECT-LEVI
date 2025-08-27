@@ -24,6 +24,7 @@
         <RoadmapView :roadmap-data="roadmapData" />
       </section>
       </div>
+      </Transition>
     <Transition name="fade">
       <RoadmapLoader v-if="currentView === 'loading'" />
       </Transition>
