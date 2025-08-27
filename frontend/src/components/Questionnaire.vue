@@ -1,10 +1,12 @@
 <template>
   <div class="questionnaire-container">
-    <div class="progress-text">
-      Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
-    </div>
-    <div class="progress-bar-container">
-      <div class="progress-bar" :style="{ width: progressPercentage + '%' }"></div>
+    <div v-if="currentQuestion">
+      <div class="progress-text">
+        Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+      </div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" :style="{ width: progressPercentage + '%' }"></div>
+      </div>
     </div>
     <Transition name="fade" mode="out-in">
       <div v-if="currentQuestion" class="question-wrapper" :key="currentQuestion.id">
@@ -28,7 +30,7 @@
                 @change="handleCheckboxChange(currentQuestion.id, option.value, option.exclusive)"
                 :disabled="isCheckboxDisabled(currentQuestion.id, option.value)"
               >
-              {{ option.label }}
+              <span>{{ option.label }}</span>
             </label>
           </div>
 
@@ -62,6 +64,8 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import CustomDropdown from './CustomDropdown.vue';
+import axios from 'axios';
+const emit = defineEmits(['journey-complete']);
 
 // --- DATA DEFINITIONS ---
 
@@ -239,10 +243,15 @@ const questions = ref([
 // --- STATE MANAGEMENT ---
 const currentQuestionIndex = ref(0);
 const answers = ref({});
+const isLoading = ref(false);
+const errorMessage = ref('');
 
 // --- DYNAMIC LOGIC ---
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
 const progressPercentage = computed(() => ((currentQuestionIndex.value) / (questions.value.length - 1)) * 100);
+const props = defineProps({
+  cvSkills: Array
+});
 
 // Watcher to dynamically populate the 'roles' question options
 watch(() => answers.value.sector, (selectedSector) => {
@@ -323,9 +332,33 @@ function previousQuestion() {
   if (currentQuestionIndex.value > 0) currentQuestionIndex.value--;
 }
 
-function handleSubmit() {
-  console.log("Final Answers:", answers.value);
-  // Logic to send 'answers.value' to the backend will go here
+async function handleSubmit() {
+  isLoading.value = true;
+  errorMessage.value = '';
+
+  // 1. Assemble the payload to match the backend's FinalPayload model
+  const payload = {
+    cv_skills: props.cvSkills,
+    questionnaire_answers: answers.value 
+  };
+
+  console.log("Sending final payload to backend:", payload);
+
+  try {
+    // 2. Make the real API call to the journey endpoint
+    const response = await axios.post("http://127.0.0.1:8000/api/submit-journey", payload);
+
+    console.log("Backend response:", response.data.message);
+    
+    // 3. Signal that the journey is complete
+    emit('journey-complete'); 
+
+  } catch (error) {
+    console.error("Error submitting journey:", error);
+    errorMessage.value = "An error occurred while submitting your data. Please try again.";
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
 
