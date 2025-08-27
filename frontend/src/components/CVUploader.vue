@@ -5,7 +5,14 @@
     @dragover.prevent="handleDragOver"
     @dragleave.prevent="handleDragLeave"
     @drop.prevent="handleDrop"
+    
   >
+    <div class="test-controls">
+      <button @click="toggleLoadingTest" type="button" class="test-button">
+        Toggle Loading Animation (Test)
+      </button>
+      <button @click="emit('cv-uploaded')" type="button" class="test-button">Skip to Questionnaire</button>
+    </div>
     <div v-if="!selectedFile && !isLoading" class="drop-zone-content">
       <svg class="upload-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -19,10 +26,6 @@
     </div>
 
     <div v-if="selectedFile && !isLoading" class="confirmation-content">
-    <button @click="handleSubmit" type="button" class="submit-button">Analyse CV</button>
-  <button @click="emit('cv-uploaded')" type="button" class="test-button">
-    Skip to Questionnaire (Test)
-  </button>
       <svg class="pdf-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
@@ -35,8 +38,7 @@
     </div>
     
     <div v-if="isLoading" class="spinner-container">
-      <div class="spinner"></div>
-      <p class="loading-text">{{ loadingStatus }}</p>
+      <SvgLoader :loading-text="loadingStatus" />
     </div>
 
     <div v-if="errorMessage" class="error-message">
@@ -49,6 +51,7 @@
 <script setup>
 import { ref } from 'vue'; 
 import axios from 'axios';
+import SvgLoader from './SvgLoader.vue';
 
 // Create reactive variables to hold the selected file and the extracted text
 const emit = defineEmits(['cv-uploaded']);
@@ -58,6 +61,14 @@ const isLoading = ref(false);
 const isDragging = ref(false);
 const loadingStatus = ref('');
 
+function toggleLoadingTest() {
+  isLoading.value = !isLoading.value;
+
+  // If we are turning the loader ON, set a sample status text
+  if (isLoading.value) {
+    loadingStatus.value = "Testing loading animation...";
+  }
+}
 // --- File Handling Logic ---
 
 // A single function to handle the file once it's selected (either by browse or drop)
@@ -166,21 +177,21 @@ async function handleSubmit() {
   border: 1px solid rgba(251, 251, 251, 0.1);
   
   /* A slightly larger radius looks better with glass */
-  border-radius: 20px; 
+  border-radius: 12px; 
   
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
 }
 .cv-uploader.is-dragging {
   border-style: dashed;
-  border-radius: 20px;
+  border-radius: 12px;
   background-color: rgba(197, 176, 205, 0.05); /* Use your new accent color */
 }
 
 .drop-zone-content {
   padding: 3rem;
   border: 2px dashed rgba(251, 251, 251, 0.2);
-  border-radius: 20px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -206,13 +217,13 @@ async function handleSubmit() {
 }
 
 .file-upload-label {
-  width: 30%;
+  width: 40%;
   padding: 0.75rem 1.5rem;
   background-color: var(--accent-color); 
   color: var(--background-color);
   font-weight: 700; 
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
   transition: transform 0.2s;
   display: inline-block;
@@ -262,8 +273,8 @@ async function handleSubmit() {
   background-color: var(--accent-color);
   color: var(--background-color);
   font-weight: 700;
-  font-size: 1.25rem;
-  border-radius: 20px;
+  font-size: 1rem;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
   transition: transform 0.2s;
@@ -297,12 +308,7 @@ async function handleSubmit() {
   gap: 1rem;
 }
 
-/* ADD this new style for the text */
-.loading-text {
-  font-weight: 500;
-  opacity: 0.8;
-  transition: opacity 0.5s ease-in-out;
-}
+
 .test-button {
   margin-top: 1rem;
   background: none;
