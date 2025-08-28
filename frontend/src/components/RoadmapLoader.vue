@@ -13,7 +13,7 @@ let statusInterval;
 
 // The messages to cycle through
 const statuses = [
-  "Analysing your skills against the job market...",
+  "Analyzing your skills against the job market...",
   "Identifying your key strengths and gaps...",
   "Generating personalized learning steps...",
   "Building your final roadmap..."

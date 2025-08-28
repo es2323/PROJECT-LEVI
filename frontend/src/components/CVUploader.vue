@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="cv-uploader" 
+class="cv-uploader" 
     :class="{ 'is-dragging': isDragging }"
     @dragover.prevent="handleDragOver"
     @dragleave.prevent="handleDragLeave"
@@ -8,11 +8,10 @@
     
   >
     <div class="test-controls">
-      <button @click="toggleLoadingTest" type="button" class="test-button">
-        Toggle Loading Animation (Test)
-      </button>
+      <button @click="toggleLoadingTest" type="button" class="test-button">Toggle Loader</button>
       <button @click="emit('cv-uploaded')" type="button" class="test-button">Skip to Questionnaire</button>
     </div>
+    <!-- STAGE 1: The Initial Drop Zone -->
     <div v-if="!selectedFile && !isLoading" class="drop-zone-content">
       <svg class="upload-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -25,6 +24,7 @@
       <input id="cv-upload-input" type="file" @change="handleFileChange" accept=".pdf" class="file-input-hidden" />
     </div>
 
+    <!-- STAGE 2: The Confirmation Screen -->
     <div v-if="selectedFile && !isLoading" class="confirmation-content">
       <svg class="pdf-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -37,10 +37,11 @@
       <button @click="handleSubmit" type="button" class="submit-button">Analyse CV</button>
     </div>
     
+    <!-- STAGE 3: The Loading Screen -->
     <div v-if="isLoading" class="spinner-container">
       <SvgLoader :loading-text="loadingStatus" />
     </div>
-
+    <!-- Error Message Display -->
     <div v-if="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
@@ -160,6 +161,8 @@ async function handleSubmit() {
   }
 }
 </script>
+
+
 
 <style scoped>
 

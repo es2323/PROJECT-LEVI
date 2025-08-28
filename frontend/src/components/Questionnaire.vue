@@ -336,26 +336,22 @@ async function handleSubmit() {
   isLoading.value = true;
   errorMessage.value = '';
 
-  // 1. Assemble the payload to match the backend's FinalPayload model
   const payload = {
     cv_skills: props.cvSkills,
     questionnaire_answers: answers.value 
   };
-
-  console.log("Sending final payload to backend:", payload);
-
+  
   try {
-    // 2. Make the real API call to the journey endpoint
+    // Make the call to SAVE the data
     const response = await axios.post("http://127.0.0.1:8000/api/submit-journey", payload);
-
     console.log("Backend response:", response.data.message);
     
-    // 3. Signal that the journey is complete
-    emit('journey-complete'); 
+    // On success, emit the event to trigger the loading screen in App.vue
+    emit('questionnaire-complete', answers.value); 
 
   } catch (error) {
     console.error("Error submitting journey:", error);
-    errorMessage.value = "An error occurred while submitting your data. Please try again.";
+    errorMessage.value = "An error occurred while submitting your data.";
   } finally {
     isLoading.value = false;
   }
