@@ -1,15 +1,19 @@
 <template>
   <nav class="navbar">
-    <div class="nav-logo">
-      <a href="#landing">LEVI</a>
-    </div>
-    <div class="nav-links">
-      <a href="#upload">How It Works</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </div>
+    <div class="nav-left">
+      <div class="nav-logo">
+        <a href="#landing">LEVI</a>
+      </div>
+      <div class="nav-links"> 
+      <a href="#samplemap">Sample Roadmap</a>
+      <a href="#upload">The Proccess</a>
+      <a href="#about">Why Levi?</a>
+      <a href="#faqs">FAQs</a>
+      </div>
+      </div>
+    
     <div class="nav-cta">
-      <a href="#upload" class="cta-button">Get Started</a>
+      <a href="#upload" class="cta-button">Get Started for Free</a>
     </div>
   </nav>
 </template>
@@ -26,20 +30,39 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  
+  padding: 1rem 2.5rem;  
   /* Styling */
-  background-color: var(--background-color);
-  border-bottom: 3px solid rgba(224, 224, 224, 0.1); /* Subtle border */
+  background-color: rgba(251, 251, 251, 0.05);
+  border-bottom: 0.5px solid var(--accent-color);
+  
+    /* The blur effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  
+  /* A subtle border to define the edge of the glass */
+  border: 1px solid rgba(251, 251, 251, 0.1);
+  
+  /* A slightly larger radius looks better with glass */
+  border-radius: 0px; 
+  
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 3rem; /* Adds space between the logo and the links */
 }
 
 .nav-logo a, .nav-links a {
   color: var(--text-color);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 700;
-  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem;
   transition: color 0.2s;
+  opacity: 0.8;
+
 }
 
 .nav-links a:hover {
@@ -52,7 +75,7 @@
 }
 
 .cta-button {
-  background-color: #ffffff;
+  background-color: #FBFBFB;
   color: #000;
   font-size: 0.9rem;
   padding: 0.5rem 1rem;

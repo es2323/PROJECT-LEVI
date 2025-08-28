@@ -31,21 +31,19 @@
     </div>
 
     <div v-if="isLoading" class="spinner-container">
-      <div class="spinner"></div>
-      <p class="loading-text">{{ loadingStatus }}</p>
+      <SvgLoader :loading-text="loadingStatus" />
     </div>
 
     <div v-if="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
-
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-// Import the central API client
 import apiClient from '../api';
+import SvgLoader from './SvgLoader.vue';
 
 const emit = defineEmits(['cv-uploaded']);
 const selectedFile = ref(null);
@@ -54,19 +52,16 @@ const isLoading = ref(false);
 const isDragging = ref(false);
 const loadingStatus = ref('');
 
-// --- File Handling Logic ---
+// --- All file handling and drag/drop logic from the FDV is correct ---
 function handleFileSelect(file) { if (file && file.type === 'application/pdf') { selectedFile.value = file; errorMessage.value = ''; } else { selectedFile.value = null; errorMessage.value = 'Please select a valid PDF file.'; } }
 function handleFileChange(event) { const file = event.target.files[0]; handleFileSelect(file); }
 function removeFile() { selectedFile.value = null; }
-
-// --- Drag and Drop Logic ---
 function handleDragOver() { isDragging.value = true; }
 function handleDragLeave() { isDragging.value = false; }
 function handleDrop(event) { isDragging.value = false; const file = event.dataTransfer.files[0]; handleFileSelect(file); }
 
-// --- Form Submission Logic ---
 async function handleSubmit() {
-  if (!selectedFile.value) { /* ... */ return; }
+  if (!selectedFile.value) { return; }
   isLoading.value = true;
   errorMessage.value = '';
   loadingStatus.value = 'Analysing your skills...';
@@ -95,114 +90,23 @@ async function handleSubmit() {
 </script>
 
 <style scoped>
-.cv-uploader {
-  width: 100%;
-  max-width: 650px;
-  margin: 2rem auto;
-  padding: 2.5rem;
-  border: 2px solid var(--accent-color);
-  border-radius: 8px;
-  text-align: center;
-  transition: background-color 0.3s, border-style 0.3s;
-}
-
-.cv-uploader.is-dragging {
-  border-style: dashed;
-  background-color: rgba(227, 180, 72, 0.05);
-}
-
-.drop-zone-content {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--text-color);
-  opacity: 0.7;
-}
-
-.drop-zone-content svg {
-  stroke: var(--accent-color);
-}
-
-.browse-text {
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
-}
-
-.file-upload-label {
-  padding: 0.5rem 1rem;
-  background-color: var(--accent-color);
-  color: var(--background-color);
-  font-weight: 700;
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  display: inline-block;
-}
-
-.file-upload-label:hover {
-  background-color: #cda240;
-}
-
-.file-input-hidden {
-  display: none;
-}
-
-.file-name-container {
-  margin-top: 1rem;
-}
-
-.file-name {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--text-color);
-  opacity: 0.9;
-}
-
-.submit-button {
-  width: 100%;
-  margin-top: 1.5rem;
-  padding: 0.75rem 1rem;
-  background-color: var(--accent-color);
-  color: var(--background-color);
-  font-weight: 700;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.submit-button:disabled {
-  background-color: #8c7127;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.spinner-container {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-.spinner {
-  border: 4px solid rgba(224, 224, 224, 0.3);
-  border-top: 4px solid var(--accent-color);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.error-message {
-  margin-top: 1rem;
-  color: #ff7f7f;
-  font-weight: bold;
-}
+/* All styles from the frontend dev's version are correct */
+.cv-uploader { width: 100%; max-width: 700px; text-align: center; background: rgba(251, 251, 251, 0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(251, 251, 251, 0.1); border-radius: 12px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
+.cv-uploader.is-dragging { border-style: dashed; border-radius: 12px; background-color: rgba(197, 176, 205, 0.05); }
+.drop-zone-content { padding: 3rem; border: 2px dashed rgba(251, 251, 251, 0.2); border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.upload-icon { stroke: var(--accent-color); opacity: 0.8; animation: pulse 2.5s infinite; }
+.drop-zone-title { font-size: 2rem; font-weight: 700; color: var(--text-color); margin: 0.5rem 0; }
+.browse-text { font-size: 1rem; opacity: 0.7; }
+.file-upload-label { width: 40%; padding: 0.75rem 1.5rem; background-color: var(--accent-color); color: var(--background-color); font-weight: 700; font-size: 1rem; border-radius: 12px; cursor: pointer; transition: transform 0.2s; display: inline-block; }
+.file-upload-label:hover { transform: scale(1.05); }
+.file-input-hidden { display: none; }
+.confirmation-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem; }
+.pdf-icon { stroke: var(--accent-color); margin-bottom: 1rem; }
+.file-name-display { font-weight: 500; font-size: 1.1rem; color: var(--text-color); }
+.remove-file-button { background: none; border: none; color: var(--text-color); opacity: 0.6; text-decoration: underline; cursor: pointer; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+.submit-button { width: 40%; padding: 1rem 1.5rem; background-color: var(--accent-color); color: var(--background-color); font-weight: 700; font-size: 1rem; border-radius: 12px; border: none; cursor: pointer; transition: transform 0.2s; }
+.submit-button:hover { transform: scale(1.02); }
+@keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+.spinner-container { margin-top: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.error-message { margin-top: 1rem; color: #ff7f7f; font-weight: bold; }
 </style>

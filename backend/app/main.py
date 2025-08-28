@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api import cv_skill_extraction, roadmap_generator, job_analyser
+# Import the two primary routers for the new workflow
+from .api import cv_skill_extraction, journey
 
 app = FastAPI(title="Project Levi API")
 
@@ -14,7 +15,8 @@ app.add_middleware(
 )
 
 app.include_router(cv_skill_extraction.router, prefix="/api")
-app.include_router(job_analyser.router, prefix="/api")
-app.include_router(roadmap_generator.router, prefix="/api")
+app.include_router(journey.router, prefix="/api")
 
-# ... (rest of your main.py file)
+@app.get("/")
+async def read_root():
+    return {"message": "Project Levi API is operational."}

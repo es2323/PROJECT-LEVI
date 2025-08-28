@@ -1,19 +1,16 @@
-<!-- frontend/src/components/LandingPage.vue -->
 <template>
   <div class="landing-container">
     <h1 class="main-title">
-      <Typewriter 
-        text="Welcome to Project Levi."
-        :speed="80"
-      />
+      <Typewriter
+        text="Welcome to Project Levi"
+        :speed="80" />
     </h1>
     <p class="subtitle">
         <Typewriter
-        text='Upload your CV.    <br>
-        Answer a few questions about your career goals.    <br>
-        Let Levi build the perfect roadmap for you.'
-        :speed="60"
-        :delay="2500"
+        text='Upload your CV    <br>
+        Answer a few questions    <br>
+        Let Levi build a roadmap for you'
+        :speed="80" :delay="2000"
       />
     </p>
     <a href="#upload" class="cta-button">Get Started</a>
@@ -30,7 +27,7 @@ import Typewriter from './Typewriter.vue';
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Makes the section take up the full screen height */
+  min-height: 100vh;
   text-align: center;
   padding: 2rem;
 }
@@ -55,7 +52,7 @@ import Typewriter from './Typewriter.vue';
   color: var(--background-color);
   font-weight: 700;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 60px;
   transition: transform 0.2s;
 }
 
