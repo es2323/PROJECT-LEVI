@@ -59,6 +59,9 @@ import TransitionScreen from './components/TransitionScreen.vue';
 import Questionnaire from './components/Questionnaire.vue';
 import RoadmapLoader from './components/RoadmapLoader.vue';
 import RoadmapView from './components/RoadmapView.vue';
+import axios from 'axios'; // Import axios
+
+
 
 // The state manager for the entire application flow
 const currentView = ref(null);
@@ -87,15 +90,20 @@ async function handleQuestionnaireComplete(questionnaireAnswers) {
     // const response = await axios.post('/api/generate-roadmap', { ... });
     // roadmapData.value = response.data;
     
-    await new Promise(resolve => setTimeout(resolve, 8000)); // Simulate AI process
-    
+    // --- SIMULATION FOR NOW ---
+    await new Promise(resolve => setTimeout(resolve, 8000)); // Simulate a long AI process
+    // roadmapData.value = { ... MOCK DATA ... }; // You can use mock data for styling
+    console.log("Roadmap successfully generated!");
+    // --- END SIMULATION ---
+
+    // 3. On success, switch to the results view    
     currentView.value = 'results';
     nextTick(() => {
       document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' });
     });
   } catch (error) {
     console.error("Failed to generate roadmap:", error);
-    // You could add an error view here: currentView.value = 'error';
+    currentView.value = 'error';
   }
 }
 </script>

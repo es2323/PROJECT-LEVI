@@ -45,7 +45,7 @@
           <button v-if="currentQuestionIndex > 0" @click="previousQuestion" type="button" class="prev-button">
             Previous
           </button>
-          <button v-if="currentQuestionIndex < questions.length - 1" @click="nextQuestion" type="button" class="next-button">
+          <button v-if="currentQuestionIndex < questions.length - 1" @click="nextQuestion" type="button" class="next-button" :disabled="!isCurrentQuestionAnswered">
             Next
           </button>
           <button v-else @click="handleSubmit" type="button" class="submit-button">
@@ -65,8 +65,7 @@
 import { ref, computed, watch } from 'vue';
 import CustomDropdown from './CustomDropdown.vue';
 import axios from 'axios';
-const emit = defineEmits(['journey-complete']);
-
+const emit = defineEmits(['questionnaire-complete']);
 // --- DATA DEFINITIONS ---
 
 // This helper object maps sectors to their specific roles
@@ -332,6 +331,29 @@ function previousQuestion() {
   if (currentQuestionIndex.value > 0) currentQuestionIndex.value--;
 }
 
+const isCurrentQuestionAnswered = computed(() => {
+  const currentId = currentQuestion.value?.id;
+  if (!currentId) return false;
+
+  const answer = answers.value[currentId];
+  
+  // Check if the answer is null/undefined
+  if (answer === undefined || answer === null) {
+    return false;
+  }
+  // Check if it's an empty string
+  if (typeof answer === 'string' && answer.trim() === '') {
+    return false;
+  }
+  // Check if it's an empty array (for checkboxes)
+  if (Array.isArray(answer) && answer.length === 0) {
+    return false;
+  }
+  
+  // If none of the above, it's answered
+  return true;
+});
+
 async function handleSubmit() {
   isLoading.value = true;
   errorMessage.value = '';
@@ -340,13 +362,13 @@ async function handleSubmit() {
     cv_skills: props.cvSkills,
     questionnaire_answers: answers.value 
   };
-  
+
   try {
-    // Make the call to SAVE the data
+    // Make the real API call to SAVE the data
     const response = await axios.post("http://127.0.0.1:8000/api/submit-journey", payload);
     console.log("Backend response:", response.data.message);
     
-    // On success, emit the event to trigger the loading screen in App.vue
+    // On success, emit the event
     emit('questionnaire-complete', answers.value); 
 
   } catch (error) {
@@ -356,6 +378,7 @@ async function handleSubmit() {
     isLoading.value = false;
   }
 }
+
 </script>
 
 
@@ -463,6 +486,11 @@ label:has(input:disabled) {
   background-color: var(--accent-color);
   color: var(--background-color);
   margin-left: auto;
+}
+
+.next-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .next-button:hover, .submit-button:hover { opacity: 0.9; }
 
