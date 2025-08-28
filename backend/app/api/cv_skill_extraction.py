@@ -1,66 +1,63 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
+from fastapi import APIRouter, UploadFile, File, HTTPException
 import pdfplumber
 import google.generativeai as genai
 import logging
 import json
 import os
+import uuid
 from dotenv import load_dotenv
-from typing import Tuple, Any
 
-# Adjust import path to point to the new session file
-from ..session import get_session, SessionData, backend
+from ..session_manager import create_session_token, redis_client, SessionData, SESSION_TTL_SECONDS
 
-# Load environment variables
 load_dotenv()
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# Configure Gemini model
 GEMINI_API_KEY = os.getenv("GENAI_API_KEY")
 if not GEMINI_API_KEY:
-    raise ValueError("GENAI_API_KEY not found in .env file.")
+    raise ValueError("GENAI_API_KEY not found in environment variables.")
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
+
 @router.post("/cv-skill-extraction")
-async def cv_skill_extraction(
-    file: UploadFile = File(...),
-    session_info: Tuple[Any, SessionData] = Depends(get_session)
-):
+async def cv_skill_extraction(file: UploadFile = File(...)):
     """
-    Extracts skills from a CV, saves them to the user's session, and returns them.
+    Creates a new session, extracts skills from a CV, saves the initial
+    data to Redis, and returns the skills and a session token to the frontend.
     """
-    session_id, session_data = session_info
-    logger.info(f"Processing CV for session_id: {session_id}")
     if not file.filename.lower().endswith('.pdf'):
-        raise HTTPException(status_code=400, detail="File must be a PDF")
+        raise HTTPException(status_code=400, detail="Invalid file type. Only PDF is supported.")
 
     try:
+        new_session_id = str(uuid.uuid4())
+        session_data = SessionData(session_id=new_session_id)
+
         with pdfplumber.open(file.file) as pdf:
             text = "".join(page.extract_text() for page in pdf.pages if page.extract_text())
-        if not text:
-            raise HTTPException(status_code=400, detail="Could not extract text from PDF.")
 
         prompt = f"""
           Analyse the provided CV text to extract the candidate's skills.
-          Your response MUST be a JSON object with a single key "skills".
-          This key should hold a list of objects, where each object has three keys: "name", "proficiency", and "confidence".
+          Your response must be a valid JSON object with a single key "skills".
           Example: {{"skills": [{{"name": "Python", "proficiency": 8, "confidence": 9}}]}}
           Do not include any other text or markdown formatting.
-
           CV Text: {text}
           """
         config = genai.GenerationConfig(response_mime_type="application/json")
         response = model.generate_content(prompt, generation_config=config)
         extracted_data = json.loads(response.text)
 
-        # Update the session with the new skill data
         session_data.cv_skills = extracted_data.get("skills", [])
-        await backend.update(session_id, session_data)
 
-        logger.info(f"Successfully extracted and stored skills for session_id: {session_id}")
-        return extracted_data
+        await redis_client.set(
+            f"session:{new_session_id}",
+            session_data.model_dump_json(),
+            ex=SESSION_TTL_SECONDS
+        )
+
+        session_token = create_session_token(new_session_id)
+        return {"skills": session_data.cv_skills, "session_token": session_token}
 
     except Exception as e:
-        logger.error(f"Error processing CV for session_id: {session_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"CV processing failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"An internal error occurred: {e}")

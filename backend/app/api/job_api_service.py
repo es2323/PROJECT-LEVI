@@ -3,17 +3,16 @@ import logging
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
-# Get API keys from environment variables
 ADZUNA_APP_ID = os.getenv("ADZUNA_APP_ID")
 ADZUNA_APP_KEY = os.getenv("ADZUNA_APP_KEY")
 
 logger = logging.getLogger(__name__)
 
 def get_job_listings(job_title: str, location: str = "gb", results_per_page: int = 5) -> list[str]:
+    """Fetches job descriptions from the Adzuna API for a given job title."""
     if not ADZUNA_APP_ID or not ADZUNA_APP_KEY:
-        logger.error("Adzuna API credentials are not set in the .env file.")
+        logger.error("Adzuna API credentials not configured.")
         return []
 
     api_url = f"https://api.adzuna.com/v1/api/jobs/{location}/search/1"
@@ -29,8 +28,7 @@ def get_job_listings(job_title: str, location: str = "gb", results_per_page: int
         response.raise_for_status()
         data = response.json()
         descriptions = [job['description'] for job in data.get('results', [])]
-        logger.info(f"Fetched {len(descriptions)} descriptions for '{job_title}' from Adzuna.")
         return descriptions
     except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching data from Adzuna: {e}")
+        logger.error(f"Adzuna API request failed: {e}")
         return []
