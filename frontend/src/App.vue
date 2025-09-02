@@ -12,8 +12,12 @@
 
     <!-- Section 2: CV Uploader (Always visible) -->
     <section id="upload">
-      <CVUploader @cv-uploaded="handleCvUploaded" />
+      <CVUploader 
+        @cv-uploaded="handleCvUploaded" 
+        @skip-to-roadmap="handleSkipToRoadmap" 
+      />
     </section>
+
     <!-- The following sections will appear here as the user progresses -->
     <Transition name="fade" mode="out-in">
       <div :key="currentView">
@@ -60,6 +64,7 @@ import Questionnaire from './components/Questionnaire.vue';
 import RoadmapLoader from './components/RoadmapLoader.vue';
 import RoadmapView from './components/RoadmapView.vue';
 import axios from 'axios'; // Import axios
+import { mockData } from './data/mockRoadmapData.js'
 
 
 
@@ -85,26 +90,24 @@ function handleContinue() {
 async function handleQuestionnaireComplete(questionnaireAnswers) {
   currentView.value = 'loading';
   try {
-    // --- This is where you will make the REAL final API call ---
-    console.log("App.vue received the final data, now calling backend to generate roadmap...");
-    // const response = await axios.post('/api/generate-roadmap', { ... });
-    // roadmapData.value = response.data;
-    
-    // --- SIMULATION FOR NOW ---
-    await new Promise(resolve => setTimeout(resolve, 8000)); // Simulate a long AI process
-    // roadmapData.value = { ... MOCK DATA ... }; // You can use mock data for styling
-    console.log("Roadmap successfully generated!");
-    // --- END SIMULATION ---
-
-    // 3. On success, switch to the results view    
+    await new Promise(resolve => setTimeout(resolve, 8000));
+    roadmapData.value = mockData;
     currentView.value = 'results';
     nextTick(() => {
       document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' });
     });
   } catch (error) {
     console.error("Failed to generate roadmap:", error);
-    currentView.value = 'error';
   }
+}
+function handleSkipToRoadmap() {
+  console.log("Skipping directly to roadmap with mock data.");
+  roadmapData.value = mockData; // Load the mock data
+  currentView.value = 'results'; // Change the view
+
+  nextTick(() => {
+    document.getElementById('roadmap')?.scrollIntoView({ behavior: 'smooth' });
+  });
 }
 </script>
 

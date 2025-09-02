@@ -10,6 +10,7 @@ class="cv-uploader"
     <div class="test-controls">
       <button @click="toggleLoadingTest" type="button" class="test-button">Toggle Loader</button>
       <button @click="emit('cv-uploaded')" type="button" class="test-button">Skip to Questionnaire</button>
+      <button @click="emit('skip-to-roadmap')" type="button" class="test-button">Skip to Roadmap</button>
     </div>
     <!-- STAGE 1: The Initial Drop Zone -->
     <div v-if="!selectedFile && !isLoading" class="drop-zone-content">
@@ -55,7 +56,7 @@ import axios from 'axios';
 import SvgLoader from './SvgLoader.vue';
 
 // Create reactive variables to hold the selected file and the extracted text
-const emit = defineEmits(['cv-uploaded']);
+const emit = defineEmits(['cv-uploaded', 'skip-to-roadmap']);
 const selectedFile = ref(null);
 const errorMessage = ref('');
 const isLoading = ref(false);

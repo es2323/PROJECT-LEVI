@@ -4,7 +4,7 @@
     <h1 class="main-title">
       <Typewriter 
         text="Welcome to Project Levi"
-        speed="80"
+        speed= 80
       />
     </h1>
     <p class="subtitle">
