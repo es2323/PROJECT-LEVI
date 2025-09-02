@@ -22,6 +22,23 @@
 
 <script setup>
 import Typewriter from './Typewriter.vue';
+
+function redirectToGoogleLogin() {
+  // 1. Get your Client ID from the environment variables
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+  // 2. This is the backend endpoint Google will redirect the user back to
+  const redirectUri = "http://127.0.0.1:8000/api/auth/google/callback";
+  
+  // 3. These are the permissions you're asking for
+  const scope = "openid profile email";
+  
+  // 4. Construct the full Google OAuth URL
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline&prompt=consent`;
+
+  // 5. Redirect the user to that URL
+  window.location.href = authUrl;
+}
 </script>
 
 <style scoped>

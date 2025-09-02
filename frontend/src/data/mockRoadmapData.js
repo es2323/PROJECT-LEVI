@@ -1,14 +1,26 @@
 // frontend/src/data/mockRoadmapData.js
+// frontend/src/data/mockRoadmapData.js
 
 export const mockData = {
   "summary_roadmap": {
     "title": "Overall Skill Summary",
     "description": "An overview of the most critical skills demanded across all your selected roles.",
     "top_skills": [
-      { "skill": "Cloud Platforms (AWS/GCP)" },
-      { "skill": "JavaScript Frameworks (Vue.js)" },
-      { "skill": "CI/CD Pipelines" },
-      { "skill": "Database Management (SQL)" }
+      { 
+        "skill": "Cloud Platforms (AWS/GCP)",
+        "explanation": "Proficiency in a major cloud provider is a universal requirement for most modern tech roles, enabling scalable deployment and management of applications.",
+        "recommended_resources": [
+          { "type": "Video", "title": "AWS Fundamentals: Going Cloud-Native", "url": "#", "is_premium": false },
+          { "type": "Course", "title": "Google Cloud Digital Leader Training", "url": "#", "is_premium": true }
+        ]
+      },
+      { 
+        "skill": "JavaScript Frameworks (Vue.js)",
+        "explanation": "Essential for building modern, interactive web applications. Vue.js is a popular and approachable choice.",
+        "recommended_resources": [
+           { "type": "Documentation", "title": "Vue.js - The Official Guide", "url": "https://vuejs.org/guide/introduction.html", "is_premium": false }
+        ]
+      }
     ]
   },
   "individual_roadmaps": [

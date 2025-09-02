@@ -30,7 +30,9 @@
           <h3>Top Demanded Skills Pathway</h3>
           <div class="timeline">
             <div v-for="item in roadmapData.summary_roadmap.top_skills" :key="item.skill" class="timeline-item">
-              <div class="skill-node">{{ item.skill }}</div>
+              <div class="skill-node required" @click="selectSkill(item)">
+                {{ item.skill }}
+              </div>
             </div>
           </div>
         </div>
