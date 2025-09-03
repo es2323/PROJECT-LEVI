@@ -4,7 +4,7 @@ from typing import Tuple, Any
 
 # Import from your session and api files
 from .session import get_session, SessionData
-from .api import cv_skill_extraction, journey # Import the new journey router
+from .api import cv_skill_extraction, journey, auth
 
 app = FastAPI(title="Project Levi API")
 
@@ -20,7 +20,8 @@ app.add_middleware(
 
 # --- Routers ---
 app.include_router(cv_skill_extraction.router, prefix="/api")
-app.include_router(journey.router, prefix="/api") # Use the new journey router
+app.include_router(journey.router, prefix="/api") 
+app.include_router(auth.router, prefix="/api")
 
 # --- Endpoints ---
 
