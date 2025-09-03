@@ -2,7 +2,9 @@
   <nav class="navbar">
     <div class="nav-left">
       <div class="nav-logo">
-        <a href="#landing">LEVI</a>
+        <a href="#landing">
+          <img src="/nav-logo.png" alt="Project Levi Logo" class="logo-img">
+        </a>
       </div>
       <div class="nav-links"> 
       <a href="#samplemap">Sample Roadmap</a>
@@ -11,14 +13,18 @@
       <a href="#faqs">FAQs</a>
       </div>
       </div>
-    
-    <div class="landing-container">
-      <button @click="redirectToGoogleLogin" class="cta-button">Get Started</button>
+    <div class="nav-cta">
+      <div v-if="isAuthenticated" class="user-info">
+        <span>Welcome, {{ user.name.split(' ')[0] }}</span>
+        <button @click="logout" class="logout-button">Logout</button>
+      </div>
+      <a v-else href="#upload" class="cta-button">Get Started</a>
     </div>
   </nav>
 </template>
 
 <script setup>
+import { useAuth } from '../composables/useAuth';
 
 function redirectToGoogleLogin() {
   // 1. Get your Client ID from the environment variables
@@ -36,6 +42,7 @@ function redirectToGoogleLogin() {
   // 5. Redirect the user to that URL
   window.location.href = authUrl;
 }
+const { isAuthenticated, user, logout } = useAuth();
 </script>
 
 <style scoped>
@@ -94,18 +101,41 @@ function redirectToGoogleLogin() {
   gap: 1rem;
 }
 
-.cta-button {
-  background-color: #FBFBFB;
-  color: #000;
-  font-size: 0.9rem;
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logout-button {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-weight: 700;
-  text-decoration: none;
-  transition: opacity 0.2s;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.logout-button:hover {
+  opacity: 1;
 }
 
+.cta-button {
+  background-color: var(--text-color);
+  color: var(--background-color);
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
 .cta-button:hover {
   opacity: 0.8;
+}
+.logo-img {
+  height: 100px; /* Adjust this value to make the logo bigger or smaller */
+  display: block; /* Helps prevent extra space below the image */
 }
 </style>

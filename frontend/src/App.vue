@@ -3,6 +3,9 @@
     <div class="debug-view">
       Current View: {{ currentView }}
     </div>
+    <div class="debug-controls">
+      <button @click="login">Simulate Login</button>
+    </div>
     <NavBar />
 
     <!-- Section 1: Landing Page (Always visible) -->
@@ -65,6 +68,7 @@ import RoadmapLoader from './components/RoadmapLoader.vue';
 import RoadmapView from './components/RoadmapView.vue';
 import axios from 'axios'; // Import axios
 import { mockData } from './data/mockRoadmapData.js'
+import { useAuth } from './composables/useAuth';
 
 
 
@@ -72,6 +76,7 @@ import { mockData } from './data/mockRoadmapData.js'
 const currentView = ref(null);
 const userCvSkills = ref([]);
 const roadmapData = ref(null);
+const { login } = useAuth();
 
 function handleCvUploaded(skills) {
   userCvSkills.value = skills;
@@ -133,7 +138,7 @@ section {
 
 .debug-view {
   position: fixed;
-  top: 5rem;
+  top: 12rem;
   left: 1rem;
   background-color: rgba(0,0,0,0.7);
   color: white;
@@ -141,5 +146,12 @@ section {
   border-radius: 4px;
   z-index: 9999;
   font-family: monospace;
+}
+
+.debug-controls {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 9999;
 }
 </style>
