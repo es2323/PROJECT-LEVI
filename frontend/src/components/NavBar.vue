@@ -7,10 +7,10 @@
         </a>
       </div>
       <div class="nav-links"> 
-      <a href="#samplemap">Sample Roadmap</a>
+      <a href="#samplemap">See Levi in Action</a>
       <a href="#upload">The Proccess</a>
       <a href="#about">Why Levi?</a>
-      <a href="#faqs">FAQs</a>
+      <a href="#faqs">Help Centre</a>
       </div>
       </div>
     <div class="nav-cta">
@@ -18,7 +18,7 @@
         <span>Welcome, {{ user.name.split(' ')[0] }}</span>
         <button @click="logout" class="logout-button">Logout</button>
       </div>
-      <a v-else href="#upload" class="cta-button">Get Started</a>
+      <a v-else href="#upload" class="cta-button">Get Started for Free</a>
     </div>
   </nav>
 </template>
@@ -57,13 +57,13 @@ const { isAuthenticated, user, logout } = useAuth();
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2.5rem;  
+  padding: 1rem 14rem;  
   /* Styling */
   background-color: rgba(251, 251, 251, 0.05);
   border-bottom: 0.5px solid var(--accent-color);
   
     /* The blur effect */
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(10px);
   
   /* A subtle border to define the edge of the glass */
@@ -78,14 +78,14 @@ const { isAuthenticated, user, logout } = useAuth();
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 3rem; /* Adds space between the logo and the links */
+  gap: 2rem; /* Adds space between the logo and the links */
 }
 
-.nav-logo a, .nav-links a {
+.nav-links a {
   color: var(--text-color);
   text-decoration: none;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   padding: 0.8rem;
   transition: color 0.2s;
   opacity: 0.8;
@@ -98,23 +98,23 @@ const { isAuthenticated, user, logout } = useAuth();
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .logout-button {
   background-color: transparent;
   color: var(--text-color);
-  border: 1px solid var(--text-color);
+  border: 2px solid var(--text-color);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   cursor: pointer;
   opacity: 0.8;
 }
@@ -132,10 +132,11 @@ const { isAuthenticated, user, logout } = useAuth();
   text-decoration: none;
 }
 .cta-button:hover {
-  opacity: 0.8;
+  opacity: 1;
 }
 .logo-img {
-  height: 100px; /* Adjust this value to make the logo bigger or smaller */
+  height: 50px; /* Adjust this value to make the logo bigger or smaller */
+  width: 55px;
   display: block; /* Helps prevent extra space below the image */
 }
 </style>

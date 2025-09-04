@@ -20,7 +20,6 @@ class="cv-uploader"
         <line x1="12" y1="3" x2="12" y2="15"></line>
       </svg>
       <p class="drop-zone-title">Drag & Drop Your CV</p>
-      <p class="browse-text">or</p>
       <label for="cv-upload-input" class="file-upload-label">Browse Files</label>
       <input id="cv-upload-input" type="file" @change="handleFileChange" accept=".pdf" class="file-input-hidden" />
     </div>
@@ -202,9 +201,10 @@ async function handleSubmit() {
   gap: 1rem;
 }
 .upload-icon {
+  height: 4rem;
   stroke: var(--accent-color);
   opacity: 0.8;
-  animation: pulse 2.5s infinite; /* ADDED: Pulsing animation */
+  animation: pulse 1.5s infinite; /* ADDED: Pulsing animation */
 }
 
 /* NEW: Style for the main title */
@@ -250,13 +250,14 @@ async function handleSubmit() {
 }
 
 .pdf-icon {
+  height: 4rem;
   stroke: var(--accent-color);
-  margin-bottom: 1rem;
+  margin-bottom: 0.3rem;
 }
 
 .file-name-display {
-  font-weight: 500;
-  font-size: 1.1rem;
+  font-weight: 200;
+  font-size: 1rem;
   color: var(--text-color);
 }
 
@@ -267,7 +268,7 @@ async function handleSubmit() {
   opacity: 0.6;
   text-decoration: underline;
   cursor: pointer;
-  margin-top: -0.5rem; /* Tucks it closer to the filename */
+  margin-top: -1rem; /* Tucks it closer to the filename */
   margin-bottom: 1.5rem;
 }
 
