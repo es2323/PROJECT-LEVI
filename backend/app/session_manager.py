@@ -37,28 +37,19 @@ def decode_session_token(token: str) -> str | None:
 class SessionData(BaseModel):
     session_id: str
     cv_skills: List[Dict[str, Any]] = Field(default_factory=list)
-    job_requirements: List[Dict[str, Any]] = Field(default_factory=list)
+    job_requirements: Dict[str, Any] = Field(default_factory=dict)
     questionnaire_data: Dict[str, Any] = Field(default_factory=dict)
+    missing_skills: Dict[str, Any] = Field(default_factory=dict)
 
 
-# In session_manager.py
-
-async def get_session_data(
-        auth: HTTPAuthorizationCredentials = Depends(bearer_scheme)
-) -> SessionData:
-    """
-    This dependency gets the session by validating the Authorization header token
-    and handles saving the data back to Redis after the endpoint is done.
-    """
+async def get_session_data(auth: HTTPAuthorizationCredentials = Depends(bearer_scheme)) -> SessionData:
     session_id = decode_session_token(auth.credentials)
     if not session_id:
-        raise HTTPException(status_code=401, detail="Invalid or expired session token")
-
-    print(f"DEBUG: Token validated. Received session_id: {session_id}")
+        raise HTTPException(status_code=401, detail="Invalid session token")
 
     raw_data = await redis_client.get(f"session:{session_id}")
     if not raw_data:
-        raise HTTPException(status_code=404, detail="Session not found or expired")
+        raise HTTPException(status_code=404, detail="Session not found")
 
     session_data_obj = SessionData.model_validate_json(raw_data)
 
@@ -71,4 +62,3 @@ async def get_session_data(
             json_data,
             ex=SESSION_TTL_SECONDS
         )
-        print(f"DEBUG: Session data successfully saved for session_id: {session_data_obj.session_id}")

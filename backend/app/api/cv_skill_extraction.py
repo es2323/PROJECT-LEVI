@@ -1,16 +1,18 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 import pdfplumber
 import logging
-import json
 import os
 import uuid
+import dotenv
 from dotenv import load_dotenv
-# FIXED: Import the missing 'genai' library
-import google.generativeai as genai
-
-# Import from your custom modules
 from ..session_manager import create_session_token, redis_client, SessionData, SESSION_TTL_SECONDS
-from .ai_service import model
+# Import the specific, renamed AI function
+from .ai_service import extract_skills_from_cv
+
+# Load .env and GENAI_API_KEY
+dotenv.load_dotenv()
+GENAI_API_KEY = os.getenv("GENAI_API_KEY")
+
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -23,23 +25,15 @@ async def cv_skill_extraction(file: UploadFile = File(...)):
 
     try:
         new_session_id = str(uuid.uuid4())
+        print(f"DEBUG: Creating new session with ID: {new_session_id}")
         session_data = SessionData(session_id=new_session_id)
 
         with pdfplumber.open(file.file) as pdf:
             text = "".join(page.extract_text() for page in pdf.pages if page.extract_text())
 
-        prompt = f"""
-          Analyse the provided CV text to extract the candidate's skills.
-          Your response must be a valid JSON object with a single key "skills".
-          Example: {{"skills": [{{"name": "Python", "proficiency": 8, "confidence": 9}}]}}
-          Do not include any other text or markdown formatting.
-          CV Text: {text}
-          """
-        config = genai.GenerationConfig(response_mime_type="application/json")
-        response = model.generate_content(prompt, generation_config=config)
-        extracted_data = json.loads(response.text)
-
-        session_data.cv_skills = extracted_data.get("skills", [])
+        # Call the new, specific AI function for CVs
+        extracted_skills = extract_skills_from_cv(text)
+        session_data.cv_skills = extracted_skills
 
         await redis_client.set(
             f"session:{new_session_id}",
@@ -48,6 +42,8 @@ async def cv_skill_extraction(file: UploadFile = File(...)):
         )
 
         session_token = create_session_token(new_session_id)
+
+        # Return the extracted skills list and the token
         return {"skills": session_data.cv_skills, "session_token": session_token}
 
     except Exception as e:
