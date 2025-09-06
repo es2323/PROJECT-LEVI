@@ -13,6 +13,11 @@
       <LandingPage />
     </section>
 
+    <!--TreeMap-->
+    <div class="landing-container">
+    <treeMap />
+    </div>
+
     <!-- Section 2: CV Uploader (Always visible) -->
     <section id="upload">
       <CVUploader 
@@ -69,6 +74,7 @@ import RoadmapView from './components/RoadmapView.vue';
 import axios from 'axios'; // Import axios
 import { mockData } from './data/mockRoadmapData.js'
 import { useAuth } from './composables/useAuth';
+import treeMap from './components/treeMap.vue';
 
 
 
