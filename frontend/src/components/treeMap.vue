@@ -44,7 +44,7 @@ const createSketch = (p) => {
     { skill: 'Build APIs with a Web Framework', direction: 'left' },
     { skill: 'Web Fundamentals (HTML, CSS, JS)', direction: 'right' },
     { skill: 'Containerization with Docker', direction: 'left' },
-    { skill: 'Cloud Fundamentals (AWS/Azure/GCP)', direction: 'right' },
+    { skill: 'Cloud Fundamentals (AWS/ Azure)', direction: 'right' },
     { skill: 'Learn about Software Testing', direction: 'left' },
   ];
   

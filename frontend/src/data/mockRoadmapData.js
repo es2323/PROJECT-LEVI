@@ -3,8 +3,6 @@
 
 export const mockData = {
   "summary_roadmap": {
-    "title": "Overall Skill Summary",
-    "description": "An overview of the most critical skills demanded across all your selected roles.",
     "top_skills": [
       { 
         "skill": "Cloud Platforms (AWS/GCP)",

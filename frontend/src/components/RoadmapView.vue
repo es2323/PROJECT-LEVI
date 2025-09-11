@@ -23,11 +23,10 @@
       
       <div v-if="activeTab === 'summary'" class="content-panel">
         <div class="roadmap-header">
-          <h1 class="roadmap-title">{{ roadmapData.summary_roadmap.title }}</h1>
-          <p class="roadmap-subtitle">{{ roadmapData.summary_roadmap.description }}</p>
+          <h1 class="roadmap-title">The Big Picture</h1>
+          <p class="roadmap-subtitle">Here's a bird's eye view of the most important skills needed for the career paths you're exploring</p>
         </div>
         <div class="analysis-section">
-          <h3>Top Demanded Skills Pathway</h3>
           <div class="timeline">
             <div v-for="item in roadmapData.summary_roadmap.top_skills" :key="item.skill" class="timeline-item">
               <div class="skill-node required" @click="selectSkill(item)">
@@ -41,11 +40,10 @@
       <div v-for="roadmap in roadmapData.individual_roadmaps" :key="roadmap.job_title">
         <div v-if="activeTab === roadmap.job_title" class="content-panel">
           <div class="roadmap-header">
-            <h1 class="roadmap-title">{{ roadmap.job_title }} Roadmap</h1>
-            <p class="roadmap-subtitle">Your personalized pathway to becoming a {{ roadmap.job_title }}.</p>
+            <h1 class="roadmap-title">{{ roadmap.job_title }}</h1>
+            <p class="roadmap-subtitle">Your personalised roadmap to becoming a {{ roadmap.job_title }}</p>
           </div>
           <div class="analysis-section">
-            <h3>Skill Gaps to Address</h3>
             <div class="timeline">
               <div v-for="gap in roadmap.skill_gaps_roadmap" :key="gap.skill" class="timeline-item">
                 <div class="skill-node required" @click="selectSkill(gap)">
@@ -106,7 +104,7 @@ function closePanel() {
 /* Your existing styles will work perfectly with this new dynamic structure */
 .roadmap-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 2rem auto;
   padding: 2.5rem;
   border: 1px solid rgba(251, 251, 251, 0.1);
@@ -127,7 +125,7 @@ function closePanel() {
   opacity: 0.6;
   font-weight: 700;
   font-size: 1rem;
-  border-bottom: 3px solid transparent;
+  border-bottom: 2px solid transparent;
 }
 .tab-button.active {
   opacity: 1;
@@ -138,12 +136,12 @@ function closePanel() {
   text-align: left;
 }
 .roadmap-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
 }
 .roadmap-subtitle {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   opacity: 0.7;
   margin: 0;
 }
@@ -234,7 +232,7 @@ h3 {
 }
 .details-panel {
   width: 100%;
-  max-width: 450px;
+  max-width: 650px;
   height: 100%;
   background-color: var(--background-color);
   box-shadow: -5px 0 15px rgba(0,0,0,0.2);
@@ -248,33 +246,33 @@ h3 {
   right: 1rem;
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: var(--text-color);
   opacity: 0.5;
   cursor: pointer;
 }
 .close-button:hover { opacity: 1; }
-.details-panel h2 { font-size: 2rem; color: var(--accent-color); margin-top: 2rem; }
+.details-panel h2 { font-size: 2rem; color: var(--accent-color); margin-top: 1.5rem; }
 .explanation { line-height: 1.6; opacity: 0.9; }
-.resources h3 { font-size: 1.2rem; border-top: 1px solid rgba(251, 251, 251, 0.1); padding-top: 1.5rem; margin-top: 2rem; }
+.resources h3 { font-size: 1.4rem; border-top: 1px solid rgba(251, 251, 251, 0.1); padding-top: 1.5rem; margin-top: 2rem; }
 .resources ul { list-style: none; padding: 0; }
 .resources li a {
   display: block;
   padding: 1rem;
   margin-bottom: 0.5rem;
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: rgba(251, 251, 251, 0.05);
   text-decoration: none;
   color: var(--text-color);
   transition: background-color 0.2s;
 }
 .resources li a:hover { background-color: rgba(251, 251, 251, 0.1); }
-.resource-type { display: block; font-size: 0.8rem; font-weight: 700; color: var(--accent-color); margin-bottom: 0.25rem; }
+.resource-type { display: block; font-size: 0.9rem; font-weight: 700; color: var(--accent-color); margin-bottom: 0.25rem; }
 .premium-tag { float: right; background-color: var(--accent-color); color: var(--background-color); font-size: 0.7rem; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700; }
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: all 0.4s ease;
+  transition: all 0.6s ease;
 }
 .slide-enter-from,
 .slide-leave-to {
