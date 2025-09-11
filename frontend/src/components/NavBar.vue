@@ -7,7 +7,7 @@
         </a>
       </div>
       <div class="nav-links"> 
-      <a href="#samplemap">See Levi in Action</a>
+      <a href="#demo">See Levi in Action</a> 
       <a href="#upload">The Proccess</a>
       <a href="#about">Why Levi?</a>
       <a href="#faqs">Help Centre</a>

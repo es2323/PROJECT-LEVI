@@ -5,6 +5,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+const emit = defineEmits(['typing-complete']);
 
 // --- Props ---
 // These are the "settings" you can pass to the component.
@@ -47,6 +48,7 @@ onMounted(() => {
         // Stop the interval once the full text is displayed
         clearInterval(typingInterval);
         // You could set isBlinking.value = false; here if you want the cursor to disappear
+        emit('typing-complete');
       }
     }, props.speed);
 

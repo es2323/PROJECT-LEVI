@@ -14,9 +14,9 @@
     </section>
 
     <!--TreeMap-->
-    <div class="landing-container">
-    <treeMap />
-    </div>
+    <section id="demo">
+      <treeMap />
+    </section>
 
     <!-- Section 2: CV Uploader (Always visible) -->
     <section id="upload">
