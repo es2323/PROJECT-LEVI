@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
 import NavBar from './components/NavBar.vue';
 import LandingPage from './components/LandingPage.vue';
 import CVUploader from './components/CVUploader.vue';
@@ -78,11 +78,17 @@ import treeMap from './components/treeMap.vue';
 
 
 
+
 // The state manager for the entire application flow
 const currentView = ref(null);
 const userCvSkills = ref([]);
 const roadmapData = ref(null);
 const { login } = useAuth();
+
+onMounted(() => {
+  // This command instantly scrolls the page to the top-left corner.
+  window.scrollTo(0, 150);
+});
 
 function handleCvUploaded(skills) {
   userCvSkills.value = skills;

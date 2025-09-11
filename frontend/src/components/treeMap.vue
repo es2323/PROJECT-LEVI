@@ -1,7 +1,8 @@
 <template>
-  <div class="animation-container">
+  <div ref="containerRef" class="animation-container">
     <h2 class="title">
-      <Typewriter 
+      <Typewriter
+        v-if="isContainerVisible"
         text="Hey Levi, give me a roadmap for a Junior Software Engineer"
         :speed="50"
         @typing-complete="startAnimation"
@@ -16,9 +17,14 @@
 import { ref, onUnmounted } from 'vue';
 import p5 from 'p5';
 import Typewriter from './Typewriter.vue';
+import { useIntersectionObserver } from '../composables/useIntersectionObserver.js';
 
 const canvasContainer = ref(null);
+const containerRef = ref(null);
 let sketchInstance = null;
+const { isVisible: isContainerVisible } = useIntersectionObserver(containerRef);
+
+
 function startAnimation() {
   // Safety check to ensure it only runs once
   if (canvasContainer.value && !sketchInstance) {
@@ -27,16 +33,19 @@ function startAnimation() {
 }
 
 const createSketch = (p) => {
-  const stepHeight = 70; // Increased vertical distance
-  const branchLength = 60;
+  const stepHeight = 80; // Increased vertical distance
+  const branchLength = 40;
   const animSpeed = 1.7;
+  const verticalPadding = 60; 
   const roadmapSteps = [
-    { skill: 'Start with Python', direction: 'right' },
-    { skill: 'HTML', direction: 'left' },
-    { skill: 'CSS', direction: 'right' },
-    { skill: 'JavaScript', direction: 'left' },
-    { skill: 'Vue.js', direction: 'right' },
-    { skill: 'Docker', direction: 'left' },
+    { skill: 'Master a Core Language (Python)', direction: 'right' },
+    { skill: 'Version Control with Git & GitHub', direction: 'left' },
+    { skill: 'Databases & SQL Fundamentals', direction: 'right' },
+    { skill: 'Build APIs with a Web Framework', direction: 'left' },
+    { skill: 'Web Fundamentals (HTML, CSS, JS)', direction: 'right' },
+    { skill: 'Containerization with Docker', direction: 'left' },
+    { skill: 'Cloud Fundamentals (AWS/Azure/GCP)', direction: 'right' },
+    { skill: 'Learn about Software Testing', direction: 'left' },
   ];
   
   let stemHeight = 0;
@@ -44,15 +53,16 @@ const createSketch = (p) => {
   let branches = [];
 
   p.setup = () => {
-    p.createCanvas(500, 500).parent(canvasContainer.value);
+    const canvasHeight = (roadmapSteps.length * stepHeight) + verticalPadding;
+    p.createCanvas(700, canvasHeight).parent(canvasContainer.value);
     p.textFont('Satoshi');
   };
 
   p.draw = () => {
     p.clear();
     const centerX = p.width / 2;
-    const totalTreeHeight = (roadmapSteps.length -1) * stepHeight;
-    const startY = (p.height / 2) + (totalTreeHeight / 2) - 380;
+    const startY = verticalPadding;
+
 
     // Grow the main stem
     if (currentStep < roadmapSteps.length) {
@@ -145,14 +155,14 @@ onUnmounted(() => {
 .animation-container {
   /* Sizing and Centering */
   width: 100%;
-  max-width: 800px;
-  height: 700px;
+  max-width: 900px;
+  height: 800px;
   margin: 2rem auto;
 display: flex;
   flex-direction: column; /* Stack items vertically */
   justify-content: flex-start; /* Align items to the top */
   align-items: center;
-  gap: 2rem; /* Add space between title and animation */
+  gap: 1rem; /* Add space between title and animation */
   padding: 2rem;
   
   /* Glass Effect */
@@ -174,8 +184,8 @@ display: flex;
 }
 
 .canvas-container {
-  width: 500px;
-  height: 500px;
+  width: 700px;
+  height: 700px;
 }
 
 </style>
