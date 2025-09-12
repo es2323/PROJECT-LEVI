@@ -52,8 +52,7 @@
     </Transition>
     <!-- You can add your static About and Contact sections at the end -->
     <section id="about">
-      <h2>About LEVI</h2>
-      <p>...</p>
+      <WhyLevi />
     </section>
     <section id="contact">
       <h2>Contact Us</h2>
@@ -75,6 +74,7 @@ import axios from 'axios'; // Import axios
 import { mockData } from './data/mockRoadmapData.js'
 import { useAuth } from './composables/useAuth';
 import treeMap from './components/treeMap.vue';
+import WhyLevi from './components/WhyLevi.vue';
 
 
 

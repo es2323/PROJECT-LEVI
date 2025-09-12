@@ -162,7 +162,7 @@ h3 {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 2px;
+  width: 7px;
   height: 100%;
   background-color: rgba(251, 251, 251, 0.1);
 }
@@ -172,6 +172,27 @@ h3 {
   padding: 1rem 2rem;
   margin-bottom: 1rem;
 }
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  width: 2rem; /* The length of the connecting line */
+  height: 4px; /* The thickness of the line */
+  background-color: rgba(251, 251, 251, 0.2);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Position the line for items on the left side */
+.timeline-item:nth-child(odd)::before {
+  right: 0;
+}
+
+/* Position the line for items on the right side */
+.timeline-item:nth-child(even)::before {
+  left: 0;
+}
+
 .timeline-item:nth-child(odd) {
   left: 0;
   text-align: right;
