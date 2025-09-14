@@ -1,7 +1,6 @@
 <template>
   <div class="why-levi-container">
     <h2 class="section-title">Why LEVI?</h2>
-    
     <div class="features-grid">
       
       <div class="feature-item">
@@ -15,7 +14,9 @@
       </div>
 
       <div class="feature-item">
-        <div class="feature-card"></div>
+        <div class="feature-card">
+          <NeuralAnimation />
+        </div>
         <div class="description">
           <h3>Your AI-Powered Solution</h3>
           <p>Levi analyzes your unique profile against a live job market to create a personalised, step-by-step learning plan in the form of a roadmap.</p>
@@ -35,6 +36,7 @@
 </template>
 
 <script setup>
+import NeuralAnimation from './NeuralAnimation.vue';
 import TangledLines from './TangledLines.vue';
 </script>
 

@@ -55,7 +55,7 @@
   transform-origin: 0 0;
   left: 50%;
   top: 50%;
-  height: 110px; /* half of sphere-wrapper width */
+  height: 80px; /* half of sphere-wrapper width */
   width: 0px;
 }
 
