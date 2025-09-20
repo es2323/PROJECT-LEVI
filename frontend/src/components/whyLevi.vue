@@ -5,7 +5,7 @@
       
       <div class="feature-item">
         <div class="feature-card">
-            <TangledLines />
+            <NeuralAnimation />
         </div>
         <div class="description">
           <h3>The Problem We Solve</h3>
@@ -15,19 +15,21 @@
 
       <div class="feature-item">
         <div class="feature-card">
-          <NeuralAnimation />
+          <TangledLines />
         </div>
         <div class="description">
           <h3>Your AI-Powered Solution</h3>
-          <p>Levi analyzes your unique profile against a live job market to create a personalised, step-by-step learning plan in the form of a roadmap.</p>
+          <p>Levi analyzes your unique profile against a live job market to create a personalised and structured learning plan in the form of a roadmap.</p>
         </div>
       </div>
 
       <div class="feature-item">
-        <div class="feature-card"></div>
+        <div class="feature-card">
+          <GooeyAnimation />
+        </div>
         <div class="description">
           <h3>From Students, For Students</h3>
-          <p>We're final-year undergrads who understand the journey. We've built you the tool we wish we had.</p>
+          <p>We're final year university students who understand the journey. We've built you the tool we wish we had.</p>
         </div>
       </div>
 
@@ -38,6 +40,7 @@
 <script setup>
 import NeuralAnimation from './NeuralAnimation.vue';
 import TangledLines from './TangledLines.vue';
+import GooeyAnimation from './GooeyAnimation.vue';
 </script>
 
 <style scoped>
@@ -72,7 +75,9 @@ import TangledLines from './TangledLines.vue';
 .feature-card {
   width: 100%; /* Card now fills its container */
   height: 260px;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* The Glass Effect */
   background: rgba(251, 251, 251, 0.05);
   backdrop-filter: blur(10px);
