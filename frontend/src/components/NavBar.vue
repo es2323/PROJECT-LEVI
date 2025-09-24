@@ -10,7 +10,7 @@
       <a href="#demo">See Levi in Action</a> 
       <a href="#upload">The Proccess</a>
       <a href="#about">Why Levi?</a>
-      <a href="#faqs">Help Centre</a>
+      <a href="#help">FAQs</a>
       </div>
       </div>
     <div class="nav-cta">

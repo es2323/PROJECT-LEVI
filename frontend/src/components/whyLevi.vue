@@ -1,6 +1,6 @@
 <template>
   <div class="why-levi-container">
-    <h2 class="section-title">Why LEVI?</h2>
+    <h2 class="section-title">Why Levi?</h2>
     <div class="features-grid">
       
       <div class="feature-item">

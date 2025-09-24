@@ -54,9 +54,8 @@
     <section id="about">
       <WhyLevi />
     </section>
-    <section id="contact">
-      <h2>Contact Us</h2>
-      <p>...</p>
+    <section id="help">
+      <FaqSection />
     </section>
   </div>
 </template>
@@ -75,6 +74,7 @@ import { mockData } from './data/mockRoadmapData.js'
 import { useAuth } from './composables/useAuth';
 import treeMap from './components/treeMap.vue';
 import WhyLevi from './components/WhyLevi.vue';
+import FaqSection from './components/FaqSection.vue';
 
 
 
