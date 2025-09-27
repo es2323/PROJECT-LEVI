@@ -57,6 +57,9 @@
     <section id="help">
       <FaqSection />
     </section>
+    <TheFooter @open-manifesto="isManifestoVisible = true" />
+    <Manifesto v-if="isManifestoVisible" @close="isManifestoVisible = false" />
+    <CookieBanner />
   </div>
 </template>
 
@@ -70,11 +73,14 @@ import Questionnaire from './components/Questionnaire.vue';
 import RoadmapLoader from './components/RoadmapLoader.vue';
 import RoadmapView from './components/RoadmapView.vue';
 import axios from 'axios'; // Import axios
-import { mockData } from './data/mockRoadmapData.js'
+import { mockData } from './data/mockRoadmapData.js';
 import { useAuth } from './composables/useAuth';
 import treeMap from './components/treeMap.vue';
 import WhyLevi from './components/WhyLevi.vue';
 import FaqSection from './components/FaqSection.vue';
+import TheFooter from './components/TheFooter.vue';
+import CookieBanner from './components/CookieBanner.vue'; 
+import Manifesto from './components/Manifesto.vue';
 
 
 
@@ -84,6 +90,7 @@ const currentView = ref(null);
 const userCvSkills = ref([]);
 const roadmapData = ref(null);
 const { login } = useAuth();
+const isManifestoVisible = ref(false);
 
 onMounted(() => {
   // This command instantly scrolls the page to the top-left corner.

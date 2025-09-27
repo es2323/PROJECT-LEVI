@@ -1,6 +1,6 @@
 <template>
   <div class="faq-container">
-    <h2 class="section-title">Frequently Asked Questions...</h2>
+    <h2 class="section-title">Frequently Asked Questions</h2>
     <div class="faq-list">
       <div v-for="(faq, index) in faqs" :key="index" class="faq-item">
         <div class="faq-question" @click="toggleFaq(index)">
